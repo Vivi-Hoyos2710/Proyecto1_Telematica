@@ -24,7 +24,7 @@ void *handle_client(void *arg)
 void serverIni(int puerto)
 {
     cout << "Iniciando servidor..." << endl;
-    struct sockaddr_in dir_client; // Aca se almacenara info de familia, puerto y dir IP del cliente
+    struct sockaddr_storage dir_client; // Aca se almacenara info de familia, puerto y dir IP del cliente
     socklen_t addr_size;
     int socketIni, socketCliente;
     // Creando el socket----
@@ -80,8 +80,8 @@ void serverIni(int puerto)
             continue;
             pthread_detach(hiloClient);
         }
-        close(socketIni);
-    }
+        }
+    close(socketIni);
 }
 int main(int argc, char const *argv[])
 {
