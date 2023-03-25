@@ -10,8 +10,8 @@ void *handle_client(void *arg)
     while ((bytes_read = recv(socket_cliente, buffer, sizeof(buffer), 0)) > 0)
     {
         // Process the data
-        std::cout << "Received data: " << buffer << std::endl;
-
+        cout << "Received data: " << buffer << endl;
+        cout << bytes_read << buffer << endl;
         // Echo the data back to the client
         send(socket_cliente, buffer, bytes_read, 0);
     }
@@ -49,7 +49,8 @@ void serverIni(int puerto)
     int ret = bind(socketIni, (struct sockaddr *)&addr, sizeof(addr));
     if (ret < 0)
     {
-        printf("error de bind en direccion %s", IP_SERVER);
+        printf("error de bind en direccion %s \n", IP_SERVER);
+        exit(EXIT_FAILURE);
     }
     else
     {
@@ -62,7 +63,10 @@ void serverIni(int puerto)
         perror("Error en listen socket");
         exit(EXIT_FAILURE);
     }
-    cout << "El socket está escuchando..." << endl;
+    else{
+        cout << "El socket está escuchando..." << endl;
+    }
+    
     while (1)
     {
         addr_size = sizeof dir_client;
@@ -80,7 +84,7 @@ void serverIni(int puerto)
             continue;
             pthread_detach(hiloClient);
         }
-        }
+    }
     close(socketIni);
 }
 int main(int argc, char const *argv[])
