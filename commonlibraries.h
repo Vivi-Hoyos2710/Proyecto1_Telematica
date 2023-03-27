@@ -8,15 +8,12 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 //STRINGS Y MANEJO DE ERRORES
-#include <stdlib.h>
-#include <iostream>
-#include <errno.h>
-#include <stdio.h> 
-#include <string> 
-#include <cstring>
+#include "StringLibraries.h"
 ///Constantes 
 #include "constante_server.h"
 ///Para manejo de los hilos
 #include <thread>
-
+//Map--como diccionario
+#include <map>
+//
 #endif // !COMMON_LIBRARIES
