@@ -40,20 +40,21 @@ void *handle_client(void *arg)
     while ((bytes_read = recv(socket_cliente, buffer, sizeof(buffer), 0)) > 0)
     {
 
-        cout << "Received data: " << buffer << endl;
+        
         try
         {
             ParserRequest requestCliente = ParserRequest::deserializeRequest(string(buffer));
+            requestCliente.printRequest();
         }
         catch(const exception& e)
         {
-            cerr <<"ERROR PETICION: "<< e.what() << '\n';
+            cerr <<"ERROR PETICION PROCESANDO"<<buffer<<": "<< e.what() << '\n';
         }
         
         
 
         
-        send(socket_cliente, buffer, bytes_read, 0);
+        //send(socket_cliente, buffer, bytes_read, 0); aun no hemos hecho estructura response, no voy a mandar nada por ahora
     }
 
     // Close the client socket and exit the thread

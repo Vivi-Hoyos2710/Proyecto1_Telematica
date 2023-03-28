@@ -72,7 +72,7 @@ ParserRequest ParserRequest::deserializeRequest(const string &request)
 
     return ParserRequest(metodo, resource, headers, version);
 }
-void ParserRequest::printRequest(ParserRequest &peticion)
+void ParserRequest::printRequest()
 {
     cout << this->method <<" "<< this->resource<<" "<<this->version  <<" "<< endl;
     string headerString;
