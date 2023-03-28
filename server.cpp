@@ -32,6 +32,7 @@ void show_client_ip(const sockaddr_storage &client_addr)
 }
 void *handle_client(void *arg)
 {
+    cout<<"Esperando mensaje cliente a recibir.."<<endl;
     int socket_cliente = *(int *)arg;
     char buffer[RECV_BUFFER_SIZE];
     int bytes_read;
