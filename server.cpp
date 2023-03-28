@@ -40,8 +40,8 @@ void *handle_client(void *arg)
     while ((bytes_read = recv(socket_cliente, buffer, sizeof(buffer), 0)) > 0)
     {
 
-        cout<<"Vuelve a mandar algo el cliente: "<<endl;
-        try
+        cout<<"Vuelve a mandar algo el cliente: "<<buffer<<endl;
+       /*  try
         {
             ParserRequest requestCliente = ParserRequest::deserializeRequest(string(buffer));
             requestCliente.printRequest();
@@ -49,7 +49,7 @@ void *handle_client(void *arg)
         catch(const exception& e)
         {
             cerr <<"ERROR PETICION PROCESANDO"<<buffer<<": "<< e.what() << '\n';
-        }
+        } */
         
         
 
