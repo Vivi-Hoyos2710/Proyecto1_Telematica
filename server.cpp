@@ -1,7 +1,6 @@
 #include "Librerias/commonlibraries.h"
-#include "Parser/ParserRequest.h"
-///Constantes 
 #include "constante_server.h"
+#include "Parser/ParserRequest.h"
 using namespace std;
 void show_client_ip(const sockaddr_storage &client_addr)
 {
@@ -36,12 +35,11 @@ void *handle_client(void *arg)
     char buffer[RECV_BUFFER_SIZE];
     int bytes_read;
 
-    // Recibir request del cliente mediante buffer
+    // Receive data from the client
     while ((bytes_read = recv(socket_cliente, buffer, sizeof(buffer), 0)) > 0)
     {
-
         cout<<"Vuelve a mandar algo el cliente: "<<buffer<<endl;
-       /*  try
+        try
         {
             ParserRequest requestCliente = ParserRequest::deserializeRequest(string(buffer));
             requestCliente.printRequest();
@@ -49,12 +47,8 @@ void *handle_client(void *arg)
         catch(const exception& e)
         {
             cerr <<"ERROR PETICION PROCESANDO"<<buffer<<": "<< e.what() << '\n';
-        } */
-        
-        
-
-        
-        //send(socket_cliente, buffer, bytes_read, 0); aun no hemos hecho estructura response, no voy a mandar nada por ahora
+        }
+        send(socket_cliente, "Respuesta mientras", bytes_read, 0);
     }
 
     // Close the client socket and exit the thread
@@ -65,7 +59,7 @@ void *handle_client(void *arg)
 void serverIni(int puerto)
 {
     cout << "Iniciando servidor..." << endl;
-
+    struct sockaddr_storage dir_client; // Aca se almacenara info de familia, puerto y dir IP del cliente
     socklen_t addr_size;
     int socketIni, socketCliente;
     // Creando el socket----
@@ -104,14 +98,12 @@ void serverIni(int puerto)
         perror("Error en listen socket");
         exit(EXIT_FAILURE);
     }
-    else
-    {
+    else{
         cout << "El socket está escuchando..." << endl;
     }
-
-    while (true)
+    
+    while (1)
     {
-         struct sockaddr_storage dir_client; // Aca se almacenara info de familia, puerto y dir IP del cliente
         addr_size = sizeof dir_client;
         // aceptando la primer coneccion en cola del listen
         socketCliente = accept(socketIni, (struct sockaddr *)&dir_client, &addr_size); // socket para manejar info del cliente conectado
