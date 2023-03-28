@@ -1,5 +1,5 @@
-#include "StringLibraries.h"
-#include "utilityFunctions.h"
+#include "../Librerias/StringLibraries.h"
+#include "Utility_Functions/utilityFunctions.h"
 using namespace std;
 class HeaderClass
 {

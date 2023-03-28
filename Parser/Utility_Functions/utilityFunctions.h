@@ -1,10 +1,10 @@
 #ifndef UTILITY_FUNCTIONS
-#define UTILITY_FUNCYIONS 
+#define UTILITY_FUNCTIONS 
 
 
 /// librerias necesarias
-#include "StringLibraries.h"
-#include <numeric> // for std::accumulate
+#include "../../Librerias/StringLibraries.h"
+#include <numeric> // para metodo accumulate
 //
 using namespace std;
 vector<string> split(const string& str,const string& delimitador) noexcept;

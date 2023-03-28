@@ -1,17 +1,19 @@
-Prueba: server.o ParserRequest.o HeaderClass.o utilityFunctions.o
-	g++ -o $@ server.o ParserRequest.o HeaderClass.o utilityFunctions.o
+OBJ_DIR=obj/
 
-server.o: server.cpp commonlibraries.h
-	g++ -c server.cpp
+Prueba: $(OBJ_DIR)server.o $(OBJ_DIR)ParserRequest.o $(OBJ_DIR)HeaderClass.o $(OBJ_DIR)utilityFunctions.o
+	g++ -o $@ $(OBJ_DIR)server.o $(OBJ_DIR)ParserRequest.o $(OBJ_DIR)HeaderClass.o $(OBJ_DIR)utilityFunctions.o
 
-ParserRequest.o: ParserRequest.cpp ParserRequest.h commonlibraries.h HeaderClass.h
-	g++ -c ParserRequest.cpp
+$(OBJ_DIR)server.o: server.cpp Librerias/commonlibraries.h
+	g++ -c server.cpp -o $(OBJ_DIR)server.o
 
-HeaderClass.o: HeaderClass.cpp HeaderClass.h utilityFunctions.h StringLibraries.h
-	g++ -c HeaderClass.cpp 
+$(OBJ_DIR)ParserRequest.o: Parser/ParserRequest.cpp Parser/ParserRequest.h Parser/HeaderClass.h 
+	g++ -c Parser/ParserRequest.cpp -o $(OBJ_DIR)ParserRequest.o
 
-utilityFunctions.o: utilityFunctions.cpp utilityFunctions.h StringLibraries.h
-	g++ -c utilityFunctions.cpp 
+$(OBJ_DIR)HeaderClass.o: Parser/HeaderClass.cpp Parser/HeaderClass.h Parser/Utility_Functions/utilityFunctions.h Librerias/StringLibraries.h
+	g++ -c Parser/HeaderClass.cpp -o $(OBJ_DIR)HeaderClass.o
+
+$(OBJ_DIR)utilityFunctions.o: Parser/Utility_Functions/utilityFunctions.cpp Parser/Utility_Functions/utilityFunctions.h Librerias/StringLibraries.h
+	g++ -c Parser/Utility_Functions/utilityFunctions.cpp -o $(OBJ_DIR)utilityFunctions.o
 
 clean:
-	rm *.o
+	rm $(OBJ_DIR)*.o Prueba

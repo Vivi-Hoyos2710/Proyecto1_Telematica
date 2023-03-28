@@ -1,5 +1,7 @@
-#include "commonlibraries.h"
-#include "ParserRequest.h"
+#include "Librerias/commonlibraries.h"
+#include "Parser/ParserRequest.h"
+///Constantes 
+#include "constante_server.h"
 using namespace std;
 void show_client_ip(const sockaddr_storage &client_addr)
 {
@@ -40,7 +42,8 @@ void *handle_client(void *arg)
 
         cout << "Received data: " << buffer << endl;
         ParserRequest requestCliente = ParserRequest::deserializeRequest(string(buffer));
-        string metodo = ParserRequest::method_from_string("GET");
+
+        
         send(socket_cliente, buffer, bytes_read, 0);
     }
 

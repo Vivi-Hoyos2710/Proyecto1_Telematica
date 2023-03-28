@@ -9,3 +9,5 @@
 #include <vector>
 //Para espacio HTTP
 #define LINE_END "\r\n"
+//Map--como diccionario
+#include <map>

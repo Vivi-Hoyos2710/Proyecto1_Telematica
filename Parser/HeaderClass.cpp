@@ -40,8 +40,3 @@ HeaderClass HeaderClass::deserialize(const string &header)
     return HeaderClass(key, value);
 }
 
-/* Header HeaderClass::deserialize(const string &header)
-{
-    
-}
- */
