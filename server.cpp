@@ -1,6 +1,6 @@
 #include "Librerias/commonlibraries.h"
 #include "Parser/ParserRequest.h"
-///Constantes 
+/// Constantes
 #include "constante_server.h"
 using namespace std;
 void show_client_ip(const sockaddr_storage &client_addr)
@@ -27,8 +27,8 @@ void show_client_ip(const sockaddr_storage &client_addr)
     }
 
     // print the IP address and port number
-    printf("Client IP: %s\n", ip_str);
-    printf("Client port: %d\n", port);
+    printf("IP del cliente: %s\n", ip_str);
+    printf("Puerto del cliente: %d\n", port);
 }
 void *handle_client(void *arg)
 {
@@ -40,21 +40,17 @@ void *handle_client(void *arg)
     while ((bytes_read = recv(socket_cliente, buffer, sizeof(buffer), 0)) > 0)
     {
 
-        
         try
         {
             ParserRequest requestCliente = ParserRequest::deserializeRequest(string(buffer));
             requestCliente.printRequest();
         }
-        catch(const exception& e)
+        catch (const exception &e)
         {
-            cerr <<"ERROR PETICION PROCESANDO"<<buffer<<": "<< e.what() << '\n';
+            cerr << "ERROR PETICION PROCESANDO " << buffer << ": " << e.what() << '\n';
         }
-        
-        
 
-        
-        //send(socket_cliente, buffer, bytes_read, 0); aun no hemos hecho estructura response, no voy a mandar nada por ahora
+        // send(socket_cliente, buffer, bytes_read, 0); aun no hemos hecho estructura response, no voy a mandar nada por ahora
     }
 
     // Close the client socket and exit the thread
@@ -111,14 +107,15 @@ void serverIni(int puerto)
 
     while (true)
     {
-         struct sockaddr_storage dir_client; // Aca se almacenara info de familia, puerto y dir IP del cliente
+        struct sockaddr_storage dir_client; // Aca se almacenara info de familia, puerto y dir IP del cliente
         addr_size = sizeof dir_client;
         // aceptando la primer coneccion en cola del listen
         socketCliente = accept(socketIni, (struct sockaddr *)&dir_client, &addr_size); // socket para manejar info del cliente conectado
         if (socketCliente < 0)
         {
             perror("Error creando socket del cliente \n");
-            exit(EXIT_FAILURE);
+            close(socketCliente);
+            continue;
         }
         show_client_ip(dir_client);
         pthread_t hiloClient;
@@ -126,8 +123,9 @@ void serverIni(int puerto)
         {
             cerr << "Fallo al crear hilo para manejo de concurrencia de clientes" << endl;
             continue;
-            pthread_detach(hiloClient);
+            
         }
+        pthread_detach(hiloClient);
     }
     close(socketIni);
 }

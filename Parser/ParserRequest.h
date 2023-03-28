@@ -16,6 +16,6 @@ public:
     void printRequest();
     static string method_from_string(const string &metodo);
     static string HTTPversion_from_string(const string &version);
-    static ParserRequest deserializeRequest(const string &request);
+    static ParserRequest deserializeRequest(const string &request); //Devuelve objeto ParserRequest a partir de la linea entregada por el cliente
 };
 #endif // PARSER_REQUEST_H_

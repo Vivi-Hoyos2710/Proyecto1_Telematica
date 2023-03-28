@@ -8,7 +8,6 @@ ParserRequest::~ParserRequest()
 
 string ParserRequest::method_from_string(const string &metodo)
 {
-    cout << "Metodo " << metodo << endl;
     if (metodo.compare("GET") == 0)
     {
         return metodo;
