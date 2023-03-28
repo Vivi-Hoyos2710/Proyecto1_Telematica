@@ -36,12 +36,21 @@ void *handle_client(void *arg)
     char buffer[RECV_BUFFER_SIZE];
     int bytes_read;
 
-    // Receive data from the client
+    // Recibir request del cliente mediante buffer
     while ((bytes_read = recv(socket_cliente, buffer, sizeof(buffer), 0)) > 0)
     {
 
         cout << "Received data: " << buffer << endl;
-        ParserRequest requestCliente = ParserRequest::deserializeRequest(string(buffer));
+        try
+        {
+            ParserRequest requestCliente = ParserRequest::deserializeRequest(string(buffer));
+        }
+        catch(const exception& e)
+        {
+            cerr <<"ERROR PETICION: "<< e.what() << '\n';
+        }
+        
+        
 
         
         send(socket_cliente, buffer, bytes_read, 0);

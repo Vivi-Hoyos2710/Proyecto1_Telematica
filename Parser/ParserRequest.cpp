@@ -45,14 +45,14 @@ ParserRequest ParserRequest::deserializeRequest(const string &request)
 
     if (lines.size() < 1)
     {
-        throw runtime_error("HTTP Request ('" + string(request) + "') tiene " + to_string(lines.size()) + " lineas, deberian ser más de una.");
+        throw invalid_argument("Error envíando petición: vacía");
     }
 
     vector<string> segments = split(lines[0], " ");
-
-    if (segments.size() != 3)
+    int sizeRequest= segments.size();
+    if (sizeRequest != 3)
     {
-        throw runtime_error("First line of HTTP request ('" + string(request) + "') consisted of " + to_string(segments.size()) + " space separated segments, should be 2.");
+        throw invalid_argument("Estructura de la petición le hacen falta elementos, magnitud actual: "+sizeRequest);
     }
 
     const string metodo = method_from_string(segments[0]);

@@ -1,7 +1,7 @@
 #ifndef PARSER_REQUEST_H_
 #define PARSER_REQUEST_H_
 #include "HeaderClass.h"
-
+#include <stdexcept>
 class ParserRequest
 {
 private:
