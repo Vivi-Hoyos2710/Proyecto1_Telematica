@@ -73,6 +73,7 @@ ParserRequest ParserRequest::deserializeRequest(const string &request)
 }
 void ParserRequest::printRequest()
 {
+    cout<<"-------Inicia print request---------------"<<endl;
     cout << this->method <<" "<< this->resource<<" "<<this->version  <<" "<< endl;
     string headerString;
     for (const pair<const string, HeaderClass> &header : this->headers)
@@ -80,4 +81,5 @@ void ParserRequest::printRequest()
         headerString += header.second.serialize();
     }
     cout<<headerString<<endl;
+    cout<<"-------termina print request---------------"<<endl;
 };
