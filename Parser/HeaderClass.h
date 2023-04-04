@@ -12,7 +12,7 @@ class HeaderClass
         void set_value (const string& value) noexcept;
 
         const string& get_key() const noexcept;
-
+        const string& get_value() const noexcept;
         string serialize() const noexcept;
 
         static HeaderClass deserialize(const string& header);

@@ -15,6 +15,9 @@ const string& HeaderClass::get_key() const noexcept
 {
     return this->key;
 }
+const string& HeaderClass::get_value() const noexcept{
+    return this->value;
+}
 
 string HeaderClass::serialize() const noexcept
 {
@@ -35,8 +38,7 @@ HeaderClass HeaderClass::deserialize(const string &header)
 
     segments.erase(segments.begin());
 
-    const string value = concat(segments," ");
+    const string value = concat(segments,"");
 
     return HeaderClass(key, value);
 }
-
