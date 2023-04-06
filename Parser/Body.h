@@ -7,11 +7,13 @@ class Body
 private:
     string contentType;
     string data;
-    vector<unsigned char> image;
+    
+ 
 
 public:
     Body();
     Body(string &contentType, string &data);
+
     ~Body();
     //getters
     const string& getData();

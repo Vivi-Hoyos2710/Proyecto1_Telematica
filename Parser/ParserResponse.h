@@ -1,6 +1,8 @@
 #ifndef PARSER_RESPONSE_H
 #define PARSER_RESPONSE_H
 #include "ParserRequest.h"
+#include <filesystem>
+#include <fcntl.h>
 class ParserResponse
 {
 private:
@@ -25,12 +27,14 @@ public:
     ParserResponse(int responseCode, const string version, const map<string, string> &headers, const Body &body) noexcept;
     ~ParserResponse();
     void handleHeadReq(const map<string, string> &reqheaders);
-    void handleGetReq();
+    void handleGetReq(string path);
     void handlePostReq();
+
 
     static ParserResponse deserializeResponse(ParserRequest &request);
     string serializeResponse();
     static ParserResponse handleMacroErrors(const string error); //Devuelve respuesta a errores de sintaxis en request
+    static int verificarDir(string path);
 };
 
 #endif

@@ -11,6 +11,15 @@ ParserResponse::~ParserResponse()
 {
 }
 
+int ParserResponse::verificarDir(string path){
+    if (filesystem::exists(path)) {
+        return 1;
+    } else {
+        return 0;
+    }
+    
+}
+
 // Metodos
 void ParserResponse::handleHeadReq(const map<string, string> &reqheaders)
 {
@@ -18,7 +27,31 @@ void ParserResponse::handleHeadReq(const map<string, string> &reqheaders)
     this->headers = reqheaders;
     this->body.setData(" ");
 }
-void ParserResponse::handleGetReq() {}
+void ParserResponse::handleGetReq(string path) {
+    int existe = verificarDir(path);
+    if(!existe){
+        //no encontro la ruta
+        this->responseCode=NOT_FOUND;
+        string tipo = "text/html";
+        string data = "<!DOCTYPE html>\r\n<html><head><title> 404 Not found</ title></ head><body><h1> Bad Request</ h1><p> Your browser sent a request that this server could not understand.</ p></ body></ html>";
+        Body nuevoBody = Body(tipo, data);
+        map<string, string> cabecera = {
+            {"Content-Type", "text/html"},
+            {"Content-Length", to_string(data.length())}};
+        this->headers = cabecera;
+        this->body = nuevoBody;
+    }else{
+        const char *cstr = path.c_str();
+        int file_fd = open(cstr, O_RDONLY);
+        off_t offset = 0;
+
+        
+    }
+    
+    
+
+    
+}
 void ParserResponse::handlePostReq()
 {
 }
@@ -32,7 +65,7 @@ ParserResponse ParserResponse::deserializeResponse(ParserRequest &request)
     }
     else if (request.getMethod().compare("GET") == 0)
     {
-        RespuestaCliente.handleGetReq();
+        RespuestaCliente.handleGetReq(request.getResource());
     }
     else
     {
@@ -51,6 +84,7 @@ string ParserResponse::serializeResponse()
     for (const auto &header : headers)
     {
         response_str += header.first + ": " + header.second + "\r\n";
+        cout << response_str << endl;
     }
 
     // Append end of headers marker
