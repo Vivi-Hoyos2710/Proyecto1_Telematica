@@ -1,14 +1,18 @@
 OBJ_DIR=obj/
 DIR_UT=Parser/Utility_Functions/
+OBJ_FILES= $(OBJ_DIR)server.o $(OBJ_DIR)ParserRequest.o $(OBJ_DIR)ParserResponse.o $(OBJ_DIR)Body.o $(OBJ_DIR)HeaderClass.o $(OBJ_DIR)utilityFunctions.o
 
-Prueba: $(OBJ_DIR)server.o $(OBJ_DIR)ParserRequest.o $(OBJ_DIR)Body.o $(OBJ_DIR)HeaderClass.o $(OBJ_DIR)utilityFunctions.o
-	g++ -o $@ $(OBJ_DIR)server.o $(OBJ_DIR)ParserRequest.o $(OBJ_DIR)Body.o $(OBJ_DIR)HeaderClass.o $(OBJ_DIR)utilityFunctions.o
+Prueba:$(OBJ_FILES)
+	g++ -o $@ $^
 
-$(OBJ_DIR)server.o: server.cpp Librerias/commonlibraries.h constante_server.h Parser/ParserRequest.h
+$(OBJ_DIR)server.o: server.cpp Librerias/commonlibraries.h constante_server.h Parser/ParserRequest.h Parser/ParserResponse.h
 	g++ -c server.cpp -o $(OBJ_DIR)server.o
 
 $(OBJ_DIR)ParserRequest.o: Parser/ParserRequest.cpp Parser/ParserRequest.h $(OBJ_DIR)HeaderClass.o $(OBJ_DIR)Body.o
 	g++ -c Parser/ParserRequest.cpp -o $(OBJ_DIR)ParserRequest.o
+
+$(OBJ_DIR)ParserResponse.o: Parser/ParserResponse.cpp Parser/ParserResponse.h  $(OBJ_DIR)ParserRequest.o
+	g++ -c Parser/ParserResponse.cpp -o $(OBJ_DIR)ParserResponse.o
 
 $(OBJ_DIR)HeaderClass.o: Parser/HeaderClass.cpp Parser/HeaderClass.h Librerias/StringLibraries.h $(OBJ_DIR)utilityFunctions.o
 	g++ -c Parser/HeaderClass.cpp -o $(OBJ_DIR)HeaderClass.o

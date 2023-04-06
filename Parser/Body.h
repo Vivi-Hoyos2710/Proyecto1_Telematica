@@ -12,8 +12,12 @@ private:
 public:
     Body();
     Body(string &contentType, string &data);
-
     ~Body();
+    //getters
+    const string& getData();
+    const string& getDataType();
+    //setters
+    void setData(const string& newData);
     static Body clasificarType(string contentType, string stringBody);
 };
 #endif

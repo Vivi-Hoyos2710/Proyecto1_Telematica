@@ -1,10 +1,11 @@
 #include "Librerias/commonlibraries.h"
 #include "constante_server.h"
 #include "Parser/ParserRequest.h"
+#include "Parser/ParserResponse.h"
 using namespace std;
 void show_client_ip(const sockaddr_storage &client_addr)
 {
-    // determine the address family (IPv4 or IPv6)
+    //(IPv4 or IPv6)
     int addr_family = client_addr.ss_family;
 
     // declare variables to hold the IP address and port number
@@ -26,28 +27,35 @@ void show_client_ip(const sockaddr_storage &client_addr)
     }
 
     // print the IP address and port number
-    printf("Client IP: %s\n", ip_str);
-    printf("Client port: %d\n", port);
+    printf("IP de Cliente: %s\n", ip_str);
+    printf("Puerto de cliente: %d\n", port);
 }
 void *handle_client(void *arg)
 {
     int socket_cliente = *(int *)arg;
     char buffer[RECV_BUFFER_SIZE];
     int bytes_read;
-
+    int numeroErrores = 0;
     // Receive data from the client
     while ((bytes_read = recv(socket_cliente, buffer, sizeof(buffer), 0)) > 0)
     {
+        char bufferEnvio[RECV_BUFFER_SIZE];
         try
         {
             ParserRequest requestCliente = ParserRequest::deserializeRequest(string(buffer));
             requestCliente.printRequest();
+            send(socket_cliente, "Respuesta mientras", bytes_read, 0);
         }
-        catch(const exception& e)
+        catch (const exception &e) //Errores de sintaxis en la escritura del request.
         {
-            cerr <<"ERROR PETICION PROCESANDO:  "<<buffer<<": "<< e.what() << '\n';
+            cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
+            numeroErrores++;
+            if(numeroErrores>5){close(socket_cliente);}
+            ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
+            string hola = RespuestaCliente.serializeResponse();
+            strcpy(bufferEnvio, hola.c_str());
+            int bytes_sent = send(socket_cliente, bufferEnvio, strlen(bufferEnvio), 0);
         }
-        send(socket_cliente, "Respuesta mientras", bytes_read, 0);
     }
 
     // Close the client socket and exit the thread
@@ -97,10 +105,11 @@ void serverIni(int puerto)
         perror("Error en listen socket");
         exit(EXIT_FAILURE);
     }
-    else{
+    else
+    {
         cout << "El socket está escuchando..." << endl;
     }
-    
+
     while (1)
     {
         addr_size = sizeof dir_client;
@@ -109,7 +118,6 @@ void serverIni(int puerto)
         if (socketCliente < 0)
         {
             perror("Error creando socket del cliente \n");
-            exit(EXIT_FAILURE);
         }
         show_client_ip(dir_client);
         pthread_t hiloClient;
@@ -117,8 +125,8 @@ void serverIni(int puerto)
         {
             cerr << "Fallo al crear hilo para manejo de concurrencia de clientes" << endl;
             continue;
-            pthread_detach(hiloClient);
         }
+        pthread_detach(hiloClient);
     }
     close(socketIni);
 }

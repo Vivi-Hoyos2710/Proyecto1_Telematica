@@ -19,4 +19,4 @@ string concat(const vector<string> &strings, const string &delim) noexcept
                                return a + delim + b;
                            });
 };
-//  [&](const string &a, const string &b) Es una función lambda
+//  [&](const string &a, const string &b) Es una funcion lambda (flecha)
