@@ -3,6 +3,8 @@
 #include "ParserRequest.h"
 #include <filesystem>
 #include <fcntl.h>
+#include <sys/stat.h>
+namespace fs = std::filesystem;
 class ParserResponse
 {
 private:
@@ -29,6 +31,8 @@ public:
     void handleHeadReq(const map<string, string> &reqheaders);
     void handleGetReq(string path);
     void handlePostReq();
+
+    Body getBody();
 
 
     static ParserResponse deserializeResponse(ParserRequest &request);

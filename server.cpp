@@ -47,7 +47,10 @@ void *handle_client(void *arg)
             ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente);
             string res = RespuestaCliente.serializeResponse();
             strcpy(bufferEnvio, res.c_str());
-            cout<<bufferEnvio<< endl;
+            cout << RespuestaCliente.getBody().getData() << "Probando esto aca esta el data" << endl;// quiero que este if compruebe si en el body hay un data
+            if(RespuestaCliente.getBody().getData() == ""){
+
+            }
             send(socket_cliente, bufferEnvio, strlen(bufferEnvio), 0);
             // funcion que nos diga que tipo de archivo vamos a retornar
         }

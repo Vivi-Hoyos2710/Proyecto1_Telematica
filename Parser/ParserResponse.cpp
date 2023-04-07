@@ -1,4 +1,5 @@
 #include "ParserResponse.h"
+string documentRoot = "/mnt/c/users/usuario/documents/telematica/Proyecto1_Telematica/documentRootFolder";
 // constructores
 ParserResponse::ParserResponse(const string version) noexcept : version(version)
 {
@@ -11,13 +12,25 @@ ParserResponse::~ParserResponse()
 {
 }
 
-int ParserResponse::verificarDir(string path){
-    if (filesystem::exists(path)) {
-        return 1;
-    } else {
-        return 0;
+int ParserResponse::verificarDir(string rutaAbuscar){
+    fs::path directory_path = documentRoot; // directorio donde buscar
+    fs::path input_path = documentRoot + rutaAbuscar; // path que se está buscando
+
+    for (const auto& entry : fs::recursive_directory_iterator(directory_path)) {
+        cout << entry << "aca esta buscando" << endl; 
+        cout << input_path << "EstO ESTOY buscando" << endl;
+        if (fs::exists(input_path)) {
+            std::cout << "El path se encuentra en: " << entry << std::endl;
+            return 1;
+            break;
+        }
     }
-    
+    return 0;
+
+}
+
+Body ParserResponse::getBody(){
+    return this->body;
 }
 
 // Metodos
@@ -41,14 +54,23 @@ void ParserResponse::handleGetReq(string path) {
         this->headers = cabecera;
         this->body = nuevoBody;
     }else{
+        string tipo = "image/jpeg";
         const char *cstr = path.c_str();
         int file_fd = open(cstr, O_RDONLY);
         off_t offset = 0;
+        struct stat file_stat;
+        if (fstat(file_fd, &file_stat) < 0) {
+            cout << "Error al obtener la información del archivo" << endl;   
+        }
+        Body nuevoBody = Body(tipo, file_fd, offset, file_stat.st_size);
+        map<string,string> cabecera = {
+            {"Content-Type", "image/jpeg"},
+            {"Content-Length", to_string(file_stat.st_size)}
+        };
+        this->headers = cabecera;
+        this->body = nuevoBody;
 
-        
     }
-    
-    
 
     
 }
