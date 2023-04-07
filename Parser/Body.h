@@ -9,7 +9,7 @@ private:
     string data;
     int file_fd;
     off_t offset;
-    size_t count;
+    ssize_t count;
  
 
 public:
@@ -23,6 +23,8 @@ public:
     const string& getData();
     const string& getDataType();
     const int& getFile_fd();
+    const off_t& getOffset();
+    const ssize_t& getCount();
     //setters
     void setData(const string& newData);
     static Body clasificarType(string contentType, string stringBody);

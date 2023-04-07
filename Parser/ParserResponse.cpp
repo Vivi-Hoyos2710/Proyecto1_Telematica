@@ -17,10 +17,7 @@ int ParserResponse::verificarDir(string rutaAbuscar){
     fs::path input_path = documentRoot + rutaAbuscar; // path que se está buscando
 
     for (const auto& entry : fs::recursive_directory_iterator(directory_path)) {
-        cout << entry << "aca esta buscando" << endl; 
-        cout << input_path << "EstO ESTOY buscando" << endl;
         if (fs::exists(input_path)) {
-            std::cout << "El path se encuentra en: " << entry << std::endl;
             return 1;
             break;
         }
@@ -46,7 +43,7 @@ void ParserResponse::handleGetReq(string path) {
         //no encontro la ruta
         this->responseCode=NOT_FOUND;
         string tipo = "text/html";
-        string data = "<!DOCTYPE html>\r\n<html><head><title> 404 Not found</ title></ head><body><h1> Bad Request</ h1><p> Your browser sent a request that this server could not understand.</ p></ body></ html>";
+        string data = "<!DOCTYPE html>\r\n<html><head><title> 404 Not found</title></head><body><h1> 404 Not Found </h1><p> No hemos encontrado la ruta que buscas</p></body></html>";
         Body nuevoBody = Body(tipo, data);
         map<string, string> cabecera = {
             {"Content-Type", "text/html"},
@@ -54,21 +51,25 @@ void ParserResponse::handleGetReq(string path) {
         this->headers = cabecera;
         this->body = nuevoBody;
     }else{
-        string tipo = "image/jpeg";
-        const char *cstr = path.c_str();
+        string tipo = "image/jpeg";// aca le pongo el content type
+        fs::path input_path = documentRoot + path; // aca concateno la document root y la path que busco
+        const char *cstr = input_path.c_str();
         int file_fd = open(cstr, O_RDONLY);
         off_t offset = 0;
         struct stat file_stat;
         if (fstat(file_fd, &file_stat) < 0) {
             cout << "Error al obtener la información del archivo" << endl;   
         }
+        fstat(file_fd, &file_stat);
         Body nuevoBody = Body(tipo, file_fd, offset, file_stat.st_size);
         map<string,string> cabecera = {
             {"Content-Type", "image/jpeg"},
             {"Content-Length", to_string(file_stat.st_size)}
         };
+        this->responseCode=OK;
         this->headers = cabecera;
         this->body = nuevoBody;
+        
 
     }
 

@@ -11,6 +11,21 @@ const string& Body::getData(){
 const string& Body::getDataType(){
     return this->contentType;
 }
+
+const int& Body::getFile_fd(){
+    return this->file_fd;
+}
+
+const off_t& Body::getOffset(){
+    return this->offset;
+}
+
+const ssize_t& Body::getCount(){
+    return this->count;
+}
+
+
+
 //set
 void Body::setData(const string& newData){
     this->data=newData;

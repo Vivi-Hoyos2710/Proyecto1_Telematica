@@ -2,6 +2,7 @@
 #include "constante_server.h"
 #include "Parser/ParserRequest.h"
 #include "Parser/ParserResponse.h"
+
 using namespace std;
 void show_client_ip(const sockaddr_storage &client_addr)
 {
@@ -47,11 +48,21 @@ void *handle_client(void *arg)
             ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente);
             string res = RespuestaCliente.serializeResponse();
             strcpy(bufferEnvio, res.c_str());
-            cout << RespuestaCliente.getBody().getData() << "Probando esto aca esta el data" << endl;// quiero que este if compruebe si en el body hay un data
+            // quiero que este if compruebe si en el body hay un data para que sepa si es un file o no
             if(RespuestaCliente.getBody().getData() == ""){
-
+                int file_fd = RespuestaCliente.getBody().getFile_fd();
+                off_t offset = RespuestaCliente.getBody().getOffset();
+                ssize_t count = RespuestaCliente.getBody().getCount();
+                
+                send(socket_cliente, bufferEnvio, strlen(bufferEnvio), 0);
+                ssize_t bytes_sent = sendfile(socket_cliente, file_fd, &offset, count);
+                if (bytes_sent== -1) {
+                    std::cerr << "sendfile failed...\n";
+                    exit(0);
+                }
+            }else{
+                send(socket_cliente, bufferEnvio, strlen(bufferEnvio), 0);
             }
-            send(socket_cliente, bufferEnvio, strlen(bufferEnvio), 0);
             // funcion que nos diga que tipo de archivo vamos a retornar
         }
         catch (const exception &e) //Errores de sintaxis en la escritura del request.
