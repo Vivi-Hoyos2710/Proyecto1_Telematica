@@ -37,12 +37,12 @@ void ParserResponse::handleHeadReq(const map<string, string> &reqheaders)
     this->headers = reqheaders;
     this->body.setData(" ");
 }
-void ParserResponse::handleGetReq(string path) {
+void ParserResponse::handleGetReq(string path) { // con esta funcion estamos manejando los get que nos mandan
     int existe = verificarDir(path);
     if(!existe){
         //no encontro la ruta
         this->responseCode=NOT_FOUND;
-        string tipo = "text/html";
+        string tipo = "text/html"; // 
         string data = "<!DOCTYPE html>\r\n<html><head><title> 404 Not found</title></head><body><h1> 404 Not Found </h1><p> No hemos encontrado la ruta que buscas</p></body></html>";
         Body nuevoBody = Body(tipo, data);
         map<string, string> cabecera = {
@@ -51,8 +51,8 @@ void ParserResponse::handleGetReq(string path) {
         this->headers = cabecera;
         this->body = nuevoBody;
     }else{
-        string tipo = "image/jpeg";// aca le pongo el content type
-        fs::path input_path = documentRoot + path; // aca concateno la document root y la path que busco
+        string tipo = "image/jpeg";//Pendiente como hacer para organizar el content type segun el archivo
+        fs::path input_path = documentRoot + path; // aca concateno la document root y la path para usar el archivo
         const char *cstr = input_path.c_str();
         int file_fd = open(cstr, O_RDONLY);
         off_t offset = 0;
@@ -69,17 +69,15 @@ void ParserResponse::handleGetReq(string path) {
         this->responseCode=OK;
         this->headers = cabecera;
         this->body = nuevoBody;
-        
-
     }
 
     
 }
-void ParserResponse::handlePostReq()
+void ParserResponse::handlePostReq()// funcion para manejar las recibidas de lo post
 {
 }
 
-ParserResponse ParserResponse::deserializeResponse(ParserRequest &request)
+ParserResponse ParserResponse::deserializeResponse(ParserRequest &request) // funcion para deserializar los response
 {
     ParserResponse RespuestaCliente = ParserResponse(request.getVersion()); // objeto clase respuesta con version HTTP/1.1
     if (request.getMethod().compare("HEAD") == 0)
@@ -96,7 +94,7 @@ ParserResponse ParserResponse::deserializeResponse(ParserRequest &request)
     }
     return RespuestaCliente;
 }
-string ParserResponse::serializeResponse()
+string ParserResponse::serializeResponse() 
 {
     string response_str;
 

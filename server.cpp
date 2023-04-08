@@ -53,7 +53,6 @@ void *handle_client(void *arg)
                 int file_fd = RespuestaCliente.getBody().getFile_fd();
                 off_t offset = RespuestaCliente.getBody().getOffset();
                 ssize_t count = RespuestaCliente.getBody().getCount();
-                
                 send(socket_cliente, bufferEnvio, strlen(bufferEnvio), 0);
                 ssize_t bytes_sent = sendfile(socket_cliente, file_fd, &offset, count);
                 if (bytes_sent== -1) {
@@ -62,7 +61,7 @@ void *handle_client(void *arg)
                 }
             }else{
                 send(socket_cliente, bufferEnvio, strlen(bufferEnvio), 0);
-            }
+            } 
             // funcion que nos diga que tipo de archivo vamos a retornar
         }
         catch (const exception &e) //Errores de sintaxis en la escritura del request.
