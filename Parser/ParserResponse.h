@@ -39,6 +39,7 @@ public:
     string serializeResponse();
     static ParserResponse handleMacroErrors(const string error); //Devuelve respuesta a errores de sintaxis en request
     static int verificarDir(string path);
+    static string extraerExtension(string path);
 };
 
 #endif

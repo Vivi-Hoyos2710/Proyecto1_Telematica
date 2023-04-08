@@ -45,6 +45,9 @@ void *handle_client(void *arg)
         {
             ParserRequest requestCliente = ParserRequest::deserializeRequest(string(buffer));
             requestCliente.printRequest();
+            //aca tendriamos el archivo si es un post
+            
+            //recibiendo el archivo
             ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente);
             string res = RespuestaCliente.serializeResponse();
             strcpy(bufferEnvio, res.c_str());

@@ -96,9 +96,9 @@ ParserRequest ParserRequest::deserializeRequest(const string &request)
                 }
             }
         }
-
+        cout << bodyString << "bodyString"<< endl;
         string tipoContenido = headers.at("Content-Type");
-        Body bodyRequest = Body::clasificarType(tipoContenido, bodyString);
+        Body bodyRequest = Body(tipoContenido, bodyString);
         return ParserRequest(metodo, resource, headers, version, bodyRequest);
     }
 

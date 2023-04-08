@@ -26,6 +26,23 @@ int ParserResponse::verificarDir(string rutaAbuscar){
 
 }
 
+string ParserResponse::extraerExtension(string rutaxd){
+  fs::path path(rutaxd);
+  string extension = path.extension().string();
+  if(extension == ".jpg" || extension == ".jpeg"){
+    return "image/jpeg";
+  }else if(extension == ".html"){
+    return "text/html";
+  }else if(extension == ".css"){
+    return "text/css";
+  }else if(extension == ".json"){
+    return "application/json";
+  }else if(extension == ".gif"){
+    return "image/gif";
+  }
+  return 0;
+}
+
 Body ParserResponse::getBody(){
     return this->body;
 }
@@ -33,9 +50,8 @@ Body ParserResponse::getBody(){
 // Metodos
 void ParserResponse::handleHeadReq(const map<string, string> &reqheaders)
 {
-    this->responseCode = OK;
-    this->headers = reqheaders;
-    this->body.setData(" ");
+    //string tipo = extraerExtension(path);
+    
 }
 void ParserResponse::handleGetReq(string path) { // con esta funcion estamos manejando los get que nos mandan
     int existe = verificarDir(path);
@@ -51,7 +67,7 @@ void ParserResponse::handleGetReq(string path) { // con esta funcion estamos man
         this->headers = cabecera;
         this->body = nuevoBody;
     }else{
-        string tipo = "image/jpeg";//Pendiente como hacer para organizar el content type segun el archivo
+        string tipo = extraerExtension(path);//Pendiente como hacer para organizar el content type segun el archivo
         fs::path input_path = documentRoot + path; // aca concateno la document root y la path para usar el archivo
         const char *cstr = input_path.c_str();
         int file_fd = open(cstr, O_RDONLY);
@@ -63,7 +79,7 @@ void ParserResponse::handleGetReq(string path) { // con esta funcion estamos man
         fstat(file_fd, &file_stat);
         Body nuevoBody = Body(tipo, file_fd, offset, file_stat.st_size);
         map<string,string> cabecera = {
-            {"Content-Type", "image/jpeg"},
+            {"Content-Type", tipo},
             {"Content-Length", to_string(file_stat.st_size)}
         };
         this->responseCode=OK;
