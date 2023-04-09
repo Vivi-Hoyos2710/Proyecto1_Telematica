@@ -1,5 +1,5 @@
 #include "ParserResponse.h"
-string documentRoot = "/mnt/c/users/usuario/documents/telematica/Proyecto1_Telematica/documentRootFolder";
+
 // constructores
 ParserResponse::ParserResponse(const string version) noexcept : version(version)
 {
@@ -12,12 +12,12 @@ ParserResponse::~ParserResponse()
 {
 }
 
-int ParserResponse::verificarDir(string rutaAbuscar){
-    fs::path directory_path = documentRoot; // directorio donde buscar
-    fs::path input_path = documentRoot + rutaAbuscar; // path que se está buscando
+int ParserResponse::verificarDir(string rutaAbuscar,const string& absPath){
+    fs::path directory_path = absPath; // directorio donde buscar
+    fs::path inputPath = absPath + rutaAbuscar; // path que se está buscando
 
     for (const auto& entry : fs::recursive_directory_iterator(directory_path)) {
-        if (fs::exists(input_path)) {
+        if (fs::exists(inputPath)) {
             return 1;
             break;
         }
@@ -48,13 +48,42 @@ Body ParserResponse::getBody(){
 }
 
 // Metodos
-void ParserResponse::handleHeadReq(const map<string, string> &reqheaders)
+void ParserResponse::handleHeadReq(string path,const string& documentRootPath)
 {
-    //string tipo = extraerExtension(path);
+ int existe = verificarDir(path,documentRootPath);
+    if(!existe){
+        //no encontro la ruta
+        this->responseCode=NOT_FOUND;
+        string tipo = "text/html"; // 
+        string data = "<!DOCTYPE html>\r\n<html><head><title> 404 Not found</title></head><body><h1> 404 Not Found </h1><p> No hemos encontrado la ruta del archivo que buscas</p></body></html>";
+        Body nuevoBody = Body(tipo, data);
+        map<string, string> cabecera = {
+            {"Content-Type", "text/html"},
+            {"Content-Length", to_string(data.length())}};
+        this->headers = cabecera;
+        this->body = nuevoBody;
+    }
+    else{
+        string tipo = extraerExtension(path);
+        fs::path inputPath = documentRootPath + path; // aca concateno la document root y la path para usar el archivo
+        const char *cstr = inputPath.c_str();
+        int file_fd = open(cstr, O_RDONLY);
+        off_t offset = 0;
+        struct stat file_stat;
+        map<string,string> cabecera = {
+            {"Content-Type", tipo},
+            {"Content-Length", to_string(file_stat.st_size)}
+        };
+        Body nuevoBody= Body();
+        this->responseCode=OK;
+        this->headers = cabecera;
+        this->body = nuevoBody;
+
+    }
     
 }
-void ParserResponse::handleGetReq(string path) { // con esta funcion estamos manejando los get que nos mandan
-    int existe = verificarDir(path);
+void ParserResponse::handleGetReq(string path,const string& documentRootPath) { // con esta funcion estamos manejando los get que nos mandan
+    int existe = verificarDir(path,documentRootPath);
     if(!existe){
         //no encontro la ruta
         this->responseCode=NOT_FOUND;
@@ -68,8 +97,8 @@ void ParserResponse::handleGetReq(string path) { // con esta funcion estamos man
         this->body = nuevoBody;
     }else{
         string tipo = extraerExtension(path);//Pendiente como hacer para organizar el content type segun el archivo
-        fs::path input_path = documentRoot + path; // aca concateno la document root y la path para usar el archivo
-        const char *cstr = input_path.c_str();
+        fs::path inputPath = documentRootPath + path; // aca concateno la document root y la path para usar el archivo
+        const char *cstr = inputPath.c_str();
         int file_fd = open(cstr, O_RDONLY);
         off_t offset = 0;
         struct stat file_stat;
@@ -89,20 +118,23 @@ void ParserResponse::handleGetReq(string path) { // con esta funcion estamos man
 
     
 }
-void ParserResponse::handlePostReq()// funcion para manejar las recibidas de lo post
+void ParserResponse::handlePostReq(string path,const string& documentRootPath)// funcion para manejar las recibidas de lo post
 {
+    
+
 }
 
-ParserResponse ParserResponse::deserializeResponse(ParserRequest &request) // funcion para deserializar los response
+ParserResponse ParserResponse::deserializeResponse(ParserRequest &request,const string& absPath) // funcion para deserializar los response
 {
+    
     ParserResponse RespuestaCliente = ParserResponse(request.getVersion()); // objeto clase respuesta con version HTTP/1.1
     if (request.getMethod().compare("HEAD") == 0)
     {
-        RespuestaCliente.handleHeadReq(request.getHeaders());
+        RespuestaCliente.handleHeadReq(request.getResource(),absPath);
     }
     else if (request.getMethod().compare("GET") == 0)
     {
-        RespuestaCliente.handleGetReq(request.getResource());
+        RespuestaCliente.handleGetReq(request.getResource(),absPath);
     }
     else
     {
@@ -114,14 +146,14 @@ string ParserResponse::serializeResponse()
 {
     string response_str;
 
-    // Append HTTP version and status code
+    // Primera linea de respuesta
     response_str += this->version + " " + to_string(responseCode) + "\r\n";
 
-    // Append headers
+    // Headers
     for (const auto &header : headers)
     {
         response_str += header.first + ": " + header.second + "\r\n";
-        cout << response_str << endl;
+        
     }
 
     // Append end of headers marker
@@ -137,33 +169,35 @@ ParserResponse ParserResponse::handleMacroErrors(const string error)
     if (error.compare("Method Not Allowed") == 0)
     {
         string tipo = "text/plain";
-        string data = "Metodo no permitido: use HEAD,POST o GET";
+        string data = "Metodo no permitido: use HEAD,POST o GET\r\n";
         Body nuevoBody = Body(tipo, data);
         map<string, string> cabecera = {
             {"Allow", "HEAD,GET,POST"},
+            {"Connection","close"},
             {"Content-Type", "text/plain"},
             {"Content-Length", to_string(data.length())}};
-        return ParserResponse(405, "HTTP/1.1", cabecera, nuevoBody);
+        return ParserResponse(METHOD_NOT_ALLOWED, "HTTP/1.1", cabecera, nuevoBody);
     }
     else if (error.compare("HTTP Version Not Supported") == 0)
     {
         string tipo = "text/html";
-        string data = "<!DOCTYPE html>\r\n< html ><head><title> 400 Bad Request</ title></ head><body><h1> Bad Request</ h1><p> Your browser sent a request that this server could not understand.</ p></ body></ html>";
+        string data = "<!DOCTYPE html>\r\n<html><head><title> HTTP version not supported</title></head><body><h1> Bad Request</h1><p> Your browser sent a request that this server could not understand.</p></body></html>\r\n";
         Body nuevoBody = Body(tipo, data);
         map<string, string> cabecera = {
             {"Connection", "close"},
             {"Content-Length", to_string(data.length())}};
-            return ParserResponse(505, "HTTP/1.1", cabecera, nuevoBody);
+            return ParserResponse(HTTP_VERSION_NOT_SUPPORTED, "HTTP/1.1", cabecera, nuevoBody);
     }
     else if (error.compare("BAD REQUEST") == 0)
     {
         string tipo = "text/plain";
-        string data = "Petición invalida";
+        string data = "Petición invalida: BAD REQUEST\r\n";
         Body nuevoBody = Body(tipo, data);
         map<string, string> cabecera = {
             {"Content-Type", "text/plain"},
+            {"Connection","close"},
             {"Content-Length", to_string(data.length())}};
-        return ParserResponse(400, "HTTP/1.1", cabecera, nuevoBody);
+        return ParserResponse(BAD_REQUEST, "HTTP/1.1", cabecera, nuevoBody);
     }
     else{
         return ParserResponse("HTTP/1.1");

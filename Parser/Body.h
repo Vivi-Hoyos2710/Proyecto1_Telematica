@@ -10,13 +10,13 @@ private:
     int file_fd;
     off_t offset;
     ssize_t count;
- 
+    char* buffer;
 
 public:
     Body();
     Body(string &contentType, string &data);
     Body(string &contenType, int &file_fd, off_t &offset, ssize_t &count);
-
+    Body(string &contentType, const char* buffer,int contentLength);
 
     ~Body();
     //getters
@@ -25,8 +25,9 @@ public:
     const int& getFile_fd();
     const off_t& getOffset();
     const ssize_t& getCount();
+    const char* getBuffer() const;
     //setters
     void setData(const string& newData);
-    static Body clasificarType(string contentType, string stringBody);
+    
 };
 #endif

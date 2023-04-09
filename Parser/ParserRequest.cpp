@@ -12,13 +12,16 @@ const string &ParserRequest::getMethod()
 {
     return this->method;
 }
-const string &ParserRequest::getVersion(){
+const string &ParserRequest::getVersion()
+{
     return this->version;
 }
-const string &ParserRequest::getResource(){
+const string &ParserRequest::getResource()
+{
     return this->resource;
 }
-const map<string,string> &ParserRequest::getHeaders(){
+const map<string, string> &ParserRequest::getHeaders()
+{
     return this->headers;
 }
 //
@@ -53,17 +56,13 @@ string ParserRequest::HTTPversion_from_string(const string &version)
         throw invalid_argument("HTTP Version Not Supported");
     }
 }
-ParserRequest ParserRequest::deserializeRequest(const string &request)
+ParserRequest ParserRequest::deserializeRequest(const char *request, char *postBuffer)
 {
-    vector<string> lines = split(request, LINE_END);
-
-    if (lines.size() < 1)
-    {
-        throw invalid_argument("BAD REQUEST");
-    }
+    vector<string> lines = split(string(request), LINE_END);
 
     vector<string> segments = split(lines[0], " ");
     int sizeRequest = segments.size();
+
     if (sizeRequest != 3)
     {
         throw invalid_argument("BAD REQUEST");
@@ -85,20 +84,20 @@ ParserRequest ParserRequest::deserializeRequest(const string &request)
     {
         string bodyString;
         string content = headers.at("Content-Length");
-
-        if (stoi(content) > 0)
+        int contentLength = stoi(content);
+        int bodyPositionStart = string(request).find(BODY_LINE, 0) + string(BODY_LINE).length();
+        char *bodyBuffer = new char[contentLength + 1];
+        int bytesRead = 0;
+        for (int i = bodyPositionStart; i < strlen(request); i++)
         {
-            for (i; i < lines.size(); i++)
-            {
-                if (lines[i].size() > 0)
-                {
-                    bodyString += lines[i];
-                }
-            }
+            bodyBuffer[bytesRead++] = request[i];
         }
-        cout << bodyString << "bodyString"<< endl;
+        bodyBuffer[bytesRead] = '\0';
+        bodyString = string(bodyBuffer);
+        
         string tipoContenido = headers.at("Content-Type");
-        Body bodyRequest = Body(tipoContenido, bodyString);
+        Body bodyRequest = Body(tipoContenido, bodyBuffer,contentLength);
+        delete[] bodyBuffer;
         return ParserRequest(metodo, resource, headers, version, bodyRequest);
     }
 
@@ -114,6 +113,6 @@ void ParserRequest::printRequest()
         cout << header.first << ": " << header.second << endl;
     }
     cout << headerString << endl;
-    cout << this->bodyReq.getData() << endl;
+    cout << this->bodyReq.getBuffer() << endl;
     cout << "-------termina print request---------------" << endl;
 };

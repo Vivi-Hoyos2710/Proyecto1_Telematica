@@ -22,6 +22,6 @@ public:
     const map<string,string> & getHeaders();
     static string method_from_string(const string &metodo);
     static string HTTPversion_from_string(const string &version);
-    static ParserRequest deserializeRequest(const string &request); //Devuelve objeto ParserRequest a partir de la linea entregada por el cliente
+    static ParserRequest deserializeRequest(const char *request,char *postBuffer); //Devuelve objeto ParserRequest a partir de la linea entregada por el cliente
 };
 #endif // PARSER_REQUEST_H_

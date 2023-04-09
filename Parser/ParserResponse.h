@@ -24,22 +24,25 @@ public:
     constexpr static int REQUEST_TIMEOUT = 408;
     constexpr static int INTERNAL_SERVER_ERROR = 500;
     constexpr static int BAD_GATEWAY = 502;
+    constexpr static int HTTP_VERSION_NOT_SUPPORTED = 505;
     constexpr static int SERVICE_UNAVAILABLE = 503;
+    constexpr static int METHOD_NOT_ALLOWED= 405;
     ParserResponse(const string version)noexcept;
     ParserResponse(int responseCode, const string version, const map<string, string> &headers, const Body &body) noexcept;
     ~ParserResponse();
-    void handleHeadReq(const map<string, string> &reqheaders);
-    void handleGetReq(string path);
-    void handlePostReq();
+    void handleHeadReq(string path,const string& documentRootPath);
+    void handleGetReq(string path,const string& documentRootPath);
+    void handlePostReq(string path,const string& documentRootPath);
 
     Body getBody();
 
 
-    static ParserResponse deserializeResponse(ParserRequest &request);
+    static ParserResponse deserializeResponse(ParserRequest &request,const string& absPath);
     string serializeResponse();
     static ParserResponse handleMacroErrors(const string error); //Devuelve respuesta a errores de sintaxis en request
-    static int verificarDir(string path);
+    static int verificarDir(string path,const string& absPath);
     static string extraerExtension(string path);
+    
 };
 
 #endif

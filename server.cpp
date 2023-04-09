@@ -2,8 +2,11 @@
 #include "constante_server.h"
 #include "Parser/ParserRequest.h"
 #include "Parser/ParserResponse.h"
-
+#include <csignal>
 using namespace std;
+
+static string direccion_absoluta_DRF; // aquí declaro variable estática para guardar la dirAbsoluta del documentRootFolder
+
 void show_client_ip(const sockaddr_storage &client_addr)
 {
     //(IPv4 or IPv6)
@@ -33,54 +36,76 @@ void show_client_ip(const sockaddr_storage &client_addr)
 }
 void *handle_client(void *arg)
 {
-    int socket_cliente = *(int *)arg;
+    int socketCliente = *(int *)arg;
     char buffer[RECV_BUFFER_SIZE];
+    char bufferEnvio[RECV_BUFFER_SIZE];
     int bytes_read;
-    int numeroErrores = 0;
+    int msgSize=0;
+    memset(bufferEnvio, 0, sizeof(bufferEnvio));
     // Receive data from the client
-    while ((bytes_read = recv(socket_cliente, buffer, sizeof(buffer), 0)) > 0)
+    memset(buffer, 0, sizeof(buffer)); // limpio buffer antes de leer.
+    while ((bytes_read = recv(socketCliente, buffer+msgSize, sizeof(buffer)-msgSize-1, 0)) > 0)
     {
-        char bufferEnvio[RECV_BUFFER_SIZE];
-        try
+        msgSize+=bytes_read;
+    }
+
+    if (string(buffer).length() == 2)
+    {
+    }
+    try
+    {
+
+        ParserRequest requestCliente = ParserRequest::deserializeRequest(buffer, bufferEnvio);
+        requestCliente.printRequest();
+        // aca tendriamos el archivo si es un post
+        if (requestCliente.getMethod() == "POST")
         {
-            ParserRequest requestCliente = ParserRequest::deserializeRequest(string(buffer));
-            requestCliente.printRequest();
-            //aca tendriamos el archivo si es un post
             
-            //recibiendo el archivo
-            ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente);
-            string res = RespuestaCliente.serializeResponse();
-            strcpy(bufferEnvio, res.c_str());
-            // quiero que este if compruebe si en el body hay un data para que sepa si es un file o no
-            if(RespuestaCliente.getBody().getData() == ""){
-                int file_fd = RespuestaCliente.getBody().getFile_fd();
-                off_t offset = RespuestaCliente.getBody().getOffset();
-                ssize_t count = RespuestaCliente.getBody().getCount();
-                send(socket_cliente, bufferEnvio, strlen(bufferEnvio), 0);
-                ssize_t bytes_sent = sendfile(socket_cliente, file_fd, &offset, count);
-                if (bytes_sent== -1) {
-                    std::cerr << "sendfile failed...\n";
-                    exit(0);
-                }
-            }else{
-                send(socket_cliente, bufferEnvio, strlen(bufferEnvio), 0);
-            } 
-            // funcion que nos diga que tipo de archivo vamos a retornar
         }
-        catch (const exception &e) //Errores de sintaxis en la escritura del request.
+
+        // recibiendo el archivo
+        ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
+        string res = RespuestaCliente.serializeResponse();
+        strcpy(bufferEnvio, res.c_str());
+        // quiero que este if compruebe si en el body hay un data para que sepa si es un file o no
+        if (RespuestaCliente.getBody().getData() == "" && requestCliente.getMethod() == "GET")
         {
-            cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
-            numeroErrores++;
-            if(numeroErrores>5){close(socket_cliente);}
-            ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
-            string hola = RespuestaCliente.serializeResponse();
-            strcpy(bufferEnvio, hola.c_str());
-            int bytes_sent = send(socket_cliente, bufferEnvio, strlen(bufferEnvio), 0);
+            int file_fd = RespuestaCliente.getBody().getFile_fd();
+            off_t offset = RespuestaCliente.getBody().getOffset();
+            ssize_t count = RespuestaCliente.getBody().getCount();
+            send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+            ssize_t bytesSent = sendfile(socketCliente, file_fd, &offset, count);
+            if (bytesSent == -1)
+            {
+                cerr << "sendfile failed...\n";
+            }
         }
+        else
+        {
+            send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+        }
+        memset(buffer, 0, sizeof(buffer));
+        if (requestCliente.getHeaders().find("Connection") != requestCliente.getHeaders().end())
+        {
+            if (!requestCliente.getHeaders().at("Connection").compare("Keep-alive"))
+            {
+                close(socketCliente);
+            }
+        }
+    }
+    catch (const exception &e) // Errores de sintaxis en la escritura del request.
+    {
+        cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
+
+        ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
+        string response = RespuestaCliente.serializeResponse();
+        strcpy(bufferEnvio, response.c_str());
+        int bytesSent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+        close(socketCliente);
     }
 
     // Close the client socket and exit the thread
-    close(socket_cliente);
+    close(socketCliente);
     pthread_exit(NULL);
 }
 
@@ -131,7 +156,7 @@ void serverIni(int puerto)
         cout << "El socket está escuchando..." << endl;
     }
 
-    while (1)
+    while (true)
     {
         addr_size = sizeof dir_client;
         // aceptando la primer coneccion en cola del listen
@@ -139,6 +164,7 @@ void serverIni(int puerto)
         if (socketCliente < 0)
         {
             perror("Error creando socket del cliente \n");
+            break;
         }
         show_client_ip(dir_client);
         pthread_t hiloClient;
@@ -149,21 +175,29 @@ void serverIni(int puerto)
         }
         pthread_detach(hiloClient);
     }
+    cout << "Apagando servidor..." << endl;
     close(socketIni);
 }
+
 int main(int argc, char const *argv[])
 {
     try
     {
         if (argc != 4)
         {
-            throw 505;
+            throw invalid_argument("Faltan argumentos para ejecutar el servidor: <HTTP PORT> <Log File> <DocumentRootFolder>");
         }
+        fs::path directorio(argv[3]);
+        if (!filesystem::exists(directorio))
+        {
+            throw runtime_error("Directorio para <DocumentRootFolder> no existe");
+        }
+        direccion_absoluta_DRF = fs::absolute(directorio).string();
         serverIni(atoi(argv[1]));
     }
-    catch (...)
+    catch (const exception &e)
     {
-        cout << "No pasó argumentos necesarios" << endl;
+        cerr << e.what() << '\n';
     }
 
     return 0;

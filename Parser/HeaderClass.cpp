@@ -32,6 +32,7 @@ string HeaderClass::serialize() const noexcept
 
 HeaderClass HeaderClass::deserialize(const string &header)
 {
+    
     vector<string> segments = split(header," ");
 
     const string key = segments[0].substr(0, segments[0].size() - 1);
