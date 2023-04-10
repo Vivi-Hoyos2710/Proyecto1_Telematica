@@ -91,38 +91,36 @@ Body ParserResponse::getBody()
 }
 
 // Metodos
-void ParserResponse::handleHeadReq(string path, const string &documentRootPath)
+void ParserResponse::handleHeadReq(string path,const string& documentRootPath)
 {
-    int existe = verificarDir(path, documentRootPath);
-    if (!existe)
+ int existe = verificarDir(path,documentRootPath);
+   if (!existe || extraerExtension(path).compare("error") == 0)
     {
         // no encontro la ruta
         this->responseCode = NOT_FOUND;
-        string tipo = "text/plain"; //
-        string mensaje="404 Not found";
-        Body nuevoBody = Body(tipo,mensaje);
-        map<string, string> cabecera = {
-            {"Content-Type", tipo},
-            {"Content-Length", to_string(mensaje.length())}};
+        Body nuevoBody= Body(); 
+        map<string,string> cabecera = {};
         this->headers = cabecera;
         this->body = nuevoBody;
     }
-    else
-    {
+    else{
         string tipo = extraerExtension(path);
         fs::path inputPath = documentRootPath + path; // aca concateno la document root y la path para usar el archivo
         const char *cstr = inputPath.c_str();
         int file_fd = open(cstr, O_RDONLY);
         off_t offset = 0;
         struct stat file_stat;
-        map<string, string> cabecera = {
+        map<string,string> cabecera = {
             {"Content-Type", tipo},
-            {"Content-Length", to_string(file_stat.st_size)}};
-        Body nuevoBody = Body();
-        this->responseCode = OK;
+            {"Content-Length", to_string(file_stat.st_size)}
+        };
+        Body nuevoBody= Body();
+        this->responseCode=OK;
         this->headers = cabecera;
         this->body = nuevoBody;
+
     }
+    
 }
 void ParserResponse::handleGetReq(string path, const string &documentRootPath)
 { // con esta funcion estamos manejando los get que nos mandan

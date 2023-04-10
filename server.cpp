@@ -49,18 +49,18 @@ void *handle_client(void *arg)
         {
             ParserRequest requestCliente = ParserRequest::deserializeRequest(buffer);
             requestCliente.printRequest();
-            
+
             ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
             string res = RespuestaCliente.serializeResponse();
             strcpy(bufferEnvio, res.c_str());
-            cout<<bufferEnvio<<endl;
-            ssize_t bytes_sent= send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
-            if (bytes_sent == -1)
+            cout << bufferEnvio << endl;
+            ssize_t bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+                if (bytes_sent == -1)
                 {
                     std::cerr << "sendfile failed...\n";
                 }
             // quiero que este if compruebe si en el body hay un data para que sepa si es un file o no
-            if (requestCliente.getMethod() == "GET" && RespuestaCliente.getBody().getData() == ""  )
+            if (requestCliente.getMethod() == "GET" && RespuestaCliente.getBody().getData() == "")
             {
                 int file_fd = RespuestaCliente.getBody().getFile_fd();
                 off_t offset = RespuestaCliente.getBody().getOffset();
@@ -72,7 +72,9 @@ void *handle_client(void *arg)
                 }
             }
             
-            //memset(bufferEnvio, 0, sizeof(buffer));
+
+            memset(bufferEnvio, 0, sizeof(buffer));
+            close(socketCliente);
         }
         catch (const exception &e) // Errores de sintaxis en la escritura del request.
         {
@@ -81,11 +83,12 @@ void *handle_client(void *arg)
             string hola = RespuestaCliente.serializeResponse();
             strcpy(bufferEnvio, hola.c_str());
             int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+            close(socketCliente);
         }
     }
 
     // Close the client socket and exit the thread
-    close(socketCliente);
+    
     pthread_exit(NULL);
 }
 
