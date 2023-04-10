@@ -11,7 +11,7 @@ private:
     off_t offset;
     ssize_t count;
     char* buffer;
-
+    int contentLength;
 public:
     Body();
     Body(string &contentType, string &data);
@@ -21,6 +21,7 @@ public:
     ~Body();
     //getters
     const string& getData();
+    const int& getLen();
     const string& getDataType();
     const int& getFile_fd();
     const off_t& getOffset();

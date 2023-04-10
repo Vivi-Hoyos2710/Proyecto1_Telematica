@@ -20,10 +20,16 @@ const string &ParserRequest::getResource()
 {
     return this->resource;
 }
+Body &ParserRequest::getBody()
+{
+    return this->bodyReq;
+}
 const map<string, string> &ParserRequest::getHeaders()
 {
     return this->headers;
 }
+
+
 //
 string ParserRequest::method_from_string(const string &metodo)
 {
@@ -56,7 +62,7 @@ string ParserRequest::HTTPversion_from_string(const string &version)
         throw invalid_argument("HTTP Version Not Supported");
     }
 }
-ParserRequest ParserRequest::deserializeRequest(const char *request, char *postBuffer)
+ParserRequest ParserRequest::deserializeRequest(const char *request)
 {
     vector<string> lines = split(string(request), LINE_END);
 
@@ -113,6 +119,11 @@ void ParserRequest::printRequest()
         cout << header.first << ": " << header.second << endl;
     }
     cout << headerString << endl;
-    cout << this->bodyReq.getBuffer() << endl;
+    if (this->method=="POST")
+    {
+        cout << this->bodyReq.getBuffer() << endl;
+    }
+    
+    
     cout << "-------termina print request---------------" << endl;
 };

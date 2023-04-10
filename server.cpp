@@ -40,68 +40,48 @@ void *handle_client(void *arg)
     char buffer[RECV_BUFFER_SIZE];
     char bufferEnvio[RECV_BUFFER_SIZE];
     int bytes_read;
-    int msgSize=0;
-    memset(bufferEnvio, 0, sizeof(bufferEnvio));
+    int msgSize = 0;
     // Receive data from the client
     memset(buffer, 0, sizeof(buffer)); // limpio buffer antes de leer.
-    while ((bytes_read = recv(socketCliente, buffer+msgSize, sizeof(buffer)-msgSize-1, 0)) > 0)
+    while ((bytes_read = recv(socketCliente, buffer, sizeof(buffer), 0)) > 0)
     {
-        msgSize+=bytes_read;
-    }
-
-    if (string(buffer).length() == 2)
-    {
-    }
-    try
-    {
-
-        ParserRequest requestCliente = ParserRequest::deserializeRequest(buffer, bufferEnvio);
-        requestCliente.printRequest();
-        // aca tendriamos el archivo si es un post
-        if (requestCliente.getMethod() == "POST")
+        try
         {
+            ParserRequest requestCliente = ParserRequest::deserializeRequest(buffer);
+            requestCliente.printRequest();
             
-        }
-
-        // recibiendo el archivo
-        ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
-        string res = RespuestaCliente.serializeResponse();
-        strcpy(bufferEnvio, res.c_str());
-        // quiero que este if compruebe si en el body hay un data para que sepa si es un file o no
-        if (RespuestaCliente.getBody().getData() == "" && requestCliente.getMethod() == "GET")
-        {
-            int file_fd = RespuestaCliente.getBody().getFile_fd();
-            off_t offset = RespuestaCliente.getBody().getOffset();
-            ssize_t count = RespuestaCliente.getBody().getCount();
-            send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
-            ssize_t bytesSent = sendfile(socketCliente, file_fd, &offset, count);
-            if (bytesSent == -1)
+            ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
+            string res = RespuestaCliente.serializeResponse();
+            strcpy(bufferEnvio, res.c_str());
+            cout<<bufferEnvio<<endl;
+            ssize_t bytes_sent= send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+            if (bytes_sent == -1)
+                {
+                    std::cerr << "sendfile failed...\n";
+                }
+            // quiero que este if compruebe si en el body hay un data para que sepa si es un file o no
+            if (requestCliente.getMethod() == "GET" && RespuestaCliente.getBody().getData() == ""  )
             {
-                cerr << "sendfile failed...\n";
+                int file_fd = RespuestaCliente.getBody().getFile_fd();
+                off_t offset = RespuestaCliente.getBody().getOffset();
+                ssize_t count = RespuestaCliente.getBody().getCount();
+                ssize_t bytes_sent = sendfile(socketCliente, file_fd, &offset, count);
+                if (bytes_sent == -1)
+                {
+                    std::cerr << "sendfile failed...\n";
+                }
             }
+            
+            //memset(bufferEnvio, 0, sizeof(buffer));
         }
-        else
+        catch (const exception &e) // Errores de sintaxis en la escritura del request.
         {
-            send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+            cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
+            ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
+            string hola = RespuestaCliente.serializeResponse();
+            strcpy(bufferEnvio, hola.c_str());
+            int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
         }
-        memset(buffer, 0, sizeof(buffer));
-        if (requestCliente.getHeaders().find("Connection") != requestCliente.getHeaders().end())
-        {
-            if (!requestCliente.getHeaders().at("Connection").compare("Keep-alive"))
-            {
-                close(socketCliente);
-            }
-        }
-    }
-    catch (const exception &e) // Errores de sintaxis en la escritura del request.
-    {
-        cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
-
-        ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
-        string response = RespuestaCliente.serializeResponse();
-        strcpy(bufferEnvio, response.c_str());
-        int bytesSent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
-        close(socketCliente);
     }
 
     // Close the client socket and exit the thread

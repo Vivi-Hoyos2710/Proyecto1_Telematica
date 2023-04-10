@@ -6,7 +6,7 @@ Body::Body(string &contentType, string &data) : contentType(contentType), data(d
 Body::Body(string &contentType, int &file_fd, off_t &offset, ssize_t &count) : contentType(contentType), file_fd(file_fd), offset(offset), count(count)
 {
 }
-Body::Body(string &contentType, const char *buffer, int contentLength) : contentType(contentType)
+Body::Body(string &contentType, const char *buffer, int contentLength) : contentType(contentType),contentLength(contentLength)
 {
     this->buffer = new char[contentLength + 1];
     memcpy(this->buffer, buffer, contentLength);
@@ -39,6 +39,9 @@ const ssize_t &Body::getCount()
 const char *Body::getBuffer() const
 {
     return this->buffer;
+}
+const int& Body::getLen(){
+    return this->contentLength;
 }
 // set
 void Body::setData(const string &newData)

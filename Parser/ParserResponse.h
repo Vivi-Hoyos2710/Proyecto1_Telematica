@@ -1,7 +1,9 @@
+
 #ifndef PARSER_RESPONSE_H
 #define PARSER_RESPONSE_H
 #include "ParserRequest.h"
 #include <filesystem>
+#include <fstream>
 #include <fcntl.h>
 #include <sys/stat.h>
 namespace fs = std::filesystem;
@@ -32,7 +34,7 @@ public:
     ~ParserResponse();
     void handleHeadReq(string path,const string& documentRootPath);
     void handleGetReq(string path,const string& documentRootPath);
-    void handlePostReq(string path,const string& documentRootPath);
+    void handlePostReq(string path,const string& documentRootPath,Body bodyReq);
 
     Body getBody();
 
@@ -42,6 +44,8 @@ public:
     static ParserResponse handleMacroErrors(const string error); //Devuelve respuesta a errores de sintaxis en request
     static int verificarDir(string path,const string& absPath);
     static string extraerExtension(string path);
+    static string extensionFromContent(string rutaxd);
+    static int writeFile(const std::string& filename, const char* buffer, size_t bufferSize);
     
 };
 
