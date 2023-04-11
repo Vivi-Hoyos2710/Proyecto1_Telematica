@@ -43,10 +43,9 @@ void *handle_client(void *arg)
     int msgSize = 0;
     // Receive data from the client
     // limpio buffer antes de leer.
-    while ((bytes_read = recv(socketCliente, buffer+msgSize, sizeof(buffer)-msgSize-1, 0)) > 0)
+    while ((bytes_read = recv(socketCliente, buffer, sizeof(buffer), 0)) > 0)
     {
-        cout<<"WHILE"<<endl;
-        msgSize+=bytes_read;
+        
         try
         {
             ParserRequest requestCliente = ParserRequest::deserializeRequest(buffer);
