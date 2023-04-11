@@ -160,7 +160,7 @@ void ParserResponse::handleGetReq(string path, const string &documentRootPath)
         this->body = nuevoBody;
     }
 }
-void ParserResponse::handlePostReq(string path, const string &documentRootPath, Body bodyReq) // funcion para manejar las recibidas de lo post
+void ParserResponse::handlePostReq(string path, const string &documentRootPath, Body bodyReq,map<string,string> headers) // funcion para manejar las recibidas de lo post
 {
     int existe = verificarDir(path, documentRootPath);
     if (!existe || !extraerExtension(path).compare("error") == 0)
@@ -182,10 +182,17 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
         string contentType = bodyReq.getDataType();
         string extension = extensionFromContent(contentType);
 
+        
+        string downloadName;
+        
+        if (headers.find("nameFile")!=headers.end())
+        {   //encuentra nombre de archivo en los headers de la request.
+            
+            downloadName= headers.at("nameFile");}
         // nombre deafult
-        cout << "Asignar nombre a archivo a descargar: " << endl;
-        string downloadName="POPO";
-        string nameFile = inputPath.string() + downloadName + extension;
+        else{downloadName="defaultName";}
+        
+        string nameFile = inputPath.string()+"/"+ downloadName + extension;
 
         bool creado = writeFile(nameFile, bodyReq.getBuffer(), bodyReq.getLen());
         if (creado)
@@ -193,7 +200,7 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
             this->responseCode = CREATED;
         }
         map<string, string> cabecera = {
-            {"Location", path+downloadName}};
+            {"Location", path+"/"+downloadName}};
             this->headers = cabecera;
             string responseB="Archivo "+downloadName+" creado satisfactoriamente";
             Body nuevoBody = Body(contentType,responseB);
@@ -215,7 +222,7 @@ ParserResponse ParserResponse::deserializeResponse(ParserRequest &request, const
     }
     else
     {
-        RespuestaCliente.handlePostReq(request.getResource(), absPath, request.getBody());
+        RespuestaCliente.handlePostReq(request.getResource(), absPath, request.getBody(),request.getHeaders());
     }
     return RespuestaCliente;
 }

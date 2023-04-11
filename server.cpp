@@ -42,9 +42,11 @@ void *handle_client(void *arg)
     int bytes_read;
     int msgSize = 0;
     // Receive data from the client
-    memset(buffer, 0, sizeof(buffer)); // limpio buffer antes de leer.
-    while ((bytes_read = recv(socketCliente, buffer, sizeof(buffer), 0)) > 0)
+    // limpio buffer antes de leer.
+    while ((bytes_read = recv(socketCliente, buffer+msgSize, sizeof(buffer)-msgSize-1, 0)) > 0)
     {
+        cout<<"WHILE"<<endl;
+        msgSize+=bytes_read;
         try
         {
             ParserRequest requestCliente = ParserRequest::deserializeRequest(buffer);
@@ -60,6 +62,9 @@ void *handle_client(void *arg)
                     std::cerr << "sendfile failed...\n";
                 }
             // quiero que este if compruebe si en el body hay un data para que sepa si es un file o no
+            if(requestCliente.getMethod() == "POST"){
+                close(socketCliente);
+            }
             if (requestCliente.getMethod() == "GET" && RespuestaCliente.getBody().getData() == "")
             {
                 int file_fd = RespuestaCliente.getBody().getFile_fd();
@@ -74,7 +79,7 @@ void *handle_client(void *arg)
             
 
             memset(bufferEnvio, 0, sizeof(buffer));
-            close(socketCliente);
+            
         }
         catch (const exception &e) // Errores de sintaxis en la escritura del request.
         {
