@@ -88,19 +88,17 @@ ParserRequest ParserRequest::deserializeRequest(const char *request)
 
     if (metodo == "POST" && headers.find("Content-Length") != headers.end())
     {
-        string bodyString;
-        string content = headers.at("Content-Length");
-        int contentLength = stoi(content);
+        int contentLength = stoi(headers.at("Content-Length"));
         int bodyPositionStart = string(request).find(BODY_LINE, 0) + string(BODY_LINE).length();
         char *bodyBuffer = new char[contentLength + 1];
         int bytesRead = 0;
-        for (int i = bodyPositionStart; i < strlen(request); i++)
+        cout<<bodyPositionStart<<contentLength<<endl;
+        for (int i = bodyPositionStart; i < contentLength+bodyPositionStart; i++)
         {
-            bodyBuffer[bytesRead++] = request[i];
+            bodyBuffer[bytesRead] = request[i];
+            bytesRead++;
         }
         bodyBuffer[bytesRead] = '\0';
-        bodyString = string(bodyBuffer);
-        
         string tipoContenido = headers.at("Content-Type");
         Body bodyRequest = Body(tipoContenido, bodyBuffer,contentLength);
         delete[] bodyBuffer;

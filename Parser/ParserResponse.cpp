@@ -44,6 +44,10 @@ string ParserResponse::extraerExtension(string rutaxd)
     {
         return "text/css";
     }
+    else if (extension == ".txt")
+    {
+        return "text/plain";
+    }
     else if (extension == ".json")
     {
         return "application/json";
@@ -51,6 +55,10 @@ string ParserResponse::extraerExtension(string rutaxd)
     else if (extension == ".gif")
     {
         return "image/gif";
+    }
+    else if (extension == ".png")
+    {
+        return "image/png";
     }
     else
     {
@@ -63,6 +71,10 @@ string ParserResponse::extensionFromContent(string contenido)
     if (contenido == "image/jpeg")
     {
         return ".jpg";
+    }
+    if (contenido == "image/png")
+    {
+        return ".png";
     }
     if (contenido == "text/html")
     {
@@ -79,6 +91,10 @@ string ParserResponse::extensionFromContent(string contenido)
     if (contenido == "image/gif")
     {
         return ".gif";
+    }
+    if (contenido == "text/plain")
+    {
+        return ".txt";
     }
     else
     {
@@ -288,7 +304,7 @@ ParserResponse ParserResponse::handleMacroErrors(const string error)
 }
 int ParserResponse::writeFile(const std::string &filename, const char *buffer, size_t bufferSize)
 {
-    std::ofstream file(filename, std::ios::binary);
+    std::ofstream file(filename,std::ios::binary);
     if (file.is_open())
     {
         file.write(buffer, bufferSize);

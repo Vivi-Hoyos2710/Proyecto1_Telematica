@@ -38,61 +38,86 @@ void *handle_client(void *arg)
 {
     int socketCliente = *(int *)arg;
     char buffer[RECV_BUFFER_SIZE];
+    char bodyBuffer[RECV_BUFFER_SIZE];
     char bufferEnvio[RECV_BUFFER_SIZE];
     int bytes_read;
     int msgSize = 0;
+    int content_length = 0;
+    bool greater;
     // Receive data from the client
     // limpio buffer antes de leer.
-    while ((bytes_read = recv(socketCliente, buffer, sizeof(buffer), 0)) > 0)
+    memset(buffer, 0, sizeof(buffer)); // clear the buffer before reading
+    while (true)
     {
         
-        try
+        bytes_read = recv(socketCliente, buffer + msgSize, RECV_BUFFER_SIZE - msgSize, 0);
+        if (bytes_read <= 0)
         {
-            ParserRequest requestCliente = ParserRequest::deserializeRequest(buffer);
-            requestCliente.printRequest();
-
-            ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
-            string res = RespuestaCliente.serializeResponse();
-            strcpy(bufferEnvio, res.c_str());
-            cout << bufferEnvio << endl;
-            ssize_t bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
-                if (bytes_sent == -1)
-                {
-                    std::cerr << "sendfile failed...\n";
-                }
-            // quiero que este if compruebe si en el body hay un data para que sepa si es un file o no
-            if(requestCliente.getMethod() == "POST"){
-                close(socketCliente);
-            }
-            if (requestCliente.getMethod() == "GET" && RespuestaCliente.getBody().getData() == "")
-            {
-                int file_fd = RespuestaCliente.getBody().getFile_fd();
-                off_t offset = RespuestaCliente.getBody().getOffset();
-                ssize_t count = RespuestaCliente.getBody().getCount();
-                ssize_t bytes_sent = sendfile(socketCliente, file_fd, &offset, count);
-                if (bytes_sent == -1)
-                {
-                    std::cerr << "sendfile failed...\n";
-                }
-            }
-            
-
-            memset(bufferEnvio, 0, sizeof(buffer));
-            
-        }
-        catch (const exception &e) // Errores de sintaxis en la escritura del request.
-        {
-            cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
-            ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
-            string hola = RespuestaCliente.serializeResponse();
-            strcpy(bufferEnvio, hola.c_str());
-            int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
             close(socketCliente);
+            pthread_exit(NULL);
+
+            break;
+        }
+        msgSize += bytes_read;
+        buffer[msgSize] = '\0';
+        char *end = strstr(buffer, "\r\n\r\n");
+        int headerSize = end - buffer;
+        if (end != NULL)
+        {
+            char *content_length_str = strstr(buffer, "Content-Length:");
+            if (content_length_str != NULL)
+            {
+                content_length = atoi(content_length_str + strlen("Content-Length:"));
+                cout << content_length << endl;
+                if (msgSize - (headerSize + 4) == content_length)
+                {
+                    cout<<buffer<<endl;
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
         }
     }
+    try
+    {
+        
+        ParserRequest requestCliente = ParserRequest::deserializeRequest(buffer);
+        requestCliente.printRequest();
+        ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
+        string res = RespuestaCliente.serializeResponse();
+        strcpy(bufferEnvio, res.c_str());
+        ssize_t bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+        if (bytes_sent == -1)
+        {
+            std::cerr << "error enviando response...\n";
+        }
 
-    // Close the client socket and exit the thread
-    
+        if (requestCliente.getMethod() == "GET" && RespuestaCliente.getBody().getData() == "")
+        {
+            int file_fd = RespuestaCliente.getBody().getFile_fd();
+            off_t offset = RespuestaCliente.getBody().getOffset();
+            ssize_t count = RespuestaCliente.getBody().getCount();
+            ssize_t bytes_sent = sendfile(socketCliente, file_fd, &offset, count);
+            if (bytes_sent == -1)
+            {
+                std::cerr << "sendfile failed...\n";
+            }
+        }
+
+        memset(bufferEnvio, 0, sizeof(buffer));
+    }
+    catch (const exception &e) // Errores de sintaxis en la escritura del request.
+    {
+        cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
+        ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
+        string hola = RespuestaCliente.serializeResponse();
+        strcpy(bufferEnvio, hola.c_str());
+        int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+    }
+    close(socketCliente);
     pthread_exit(NULL);
 }
 
@@ -112,6 +137,7 @@ void serverIni(int puerto)
     else
     {
         printf("Socket creado \n");
+        int opt = 1;
     }
     // Bind del socket => asiganción ip y puerto
     struct sockaddr_in addr;
