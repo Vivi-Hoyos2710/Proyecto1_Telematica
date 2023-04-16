@@ -111,10 +111,12 @@ void *handle_client(void *arg)
             off_t offset = RespuestaCliente.getBody().getOffset();
             ssize_t count = RespuestaCliente.getBody().getCount();
             ssize_t bytes_sent = sendfile(socketCliente, file_fd, &offset, count);
+
             if (bytes_sent == -1)
             {
                 std::cerr << "sendfile failed...\n";
             }
+            close(file_fd);
         }
 
         memset(bufferEnvio, 0, sizeof(buffer));

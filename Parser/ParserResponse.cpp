@@ -1,5 +1,5 @@
 #include "ParserResponse.h"
-#include <unistd.h>
+
 // constructores
 ParserResponse::ParserResponse(const string version) noexcept : version(version)
 {
@@ -134,7 +134,7 @@ void ParserResponse::handleHeadReq(string path,const string& documentRootPath)
         this->responseCode=OK;
         this->headers = cabecera;
         this->body = nuevoBody;
-        close(file_fd);
+        
     }
     
 }
@@ -175,7 +175,7 @@ void ParserResponse::handleGetReq(string path, const string &documentRootPath)
         this->responseCode = OK;
         this->headers = cabecera;
         this->body = nuevoBody;
-        close(file_fd);
+       
     }
 }
 void ParserResponse::handlePostReq(string path, const string &documentRootPath, Body bodyReq,map<string,string> headers) // funcion para manejar las recibidas de lo post
