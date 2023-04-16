@@ -1,4 +1,6 @@
-obj/
-
-documentRootFolder/
-
+Prueba
+*.d
+*.o
+*.obj
+*.lib
+*.exe
