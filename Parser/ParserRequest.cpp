@@ -29,7 +29,6 @@ const map<string, string> &ParserRequest::getHeaders()
     return this->headers;
 }
 
-
 //
 string ParserRequest::method_from_string(const string &metodo)
 {
@@ -89,39 +88,32 @@ ParserRequest ParserRequest::deserializeRequest(const char *request)
     if (metodo == "POST" && headers.find("Content-Length") != headers.end())
     {
         int contentLength = stoi(headers.at("Content-Length"));
-        int bodyPositionStart = string(request).find(BODY_LINE, 0) + string(BODY_LINE).length();
-        char *bodyBuffer = new char[contentLength + 1];
-        int bytesRead = 0;
-        cout<<bodyPositionStart<<contentLength<<endl;
-        for (int i = bodyPositionStart; i < contentLength+bodyPositionStart; i++)
+        if (contentLength > 0)
         {
-            bodyBuffer[bytesRead] = request[i];
-            bytesRead++;
+            int bodyPositionStart = string(request).find(BODY_LINE, 0) + string(BODY_LINE).length();
+            char *bodyBuffer = new char[contentLength + 1];
+            int bytesRead = 0;
+            for (int i = bodyPositionStart; i < contentLength + bodyPositionStart; i++)
+            {
+                bodyBuffer[bytesRead] = request[i];
+                bytesRead++;
+            }
+            bodyBuffer[bytesRead] = '\0';
+            string tipoContenido = headers.at("Content-Type");
+            Body bodyRequest = Body(tipoContenido, bodyBuffer, contentLength);
+            delete[] bodyBuffer;
+            return ParserRequest(metodo, resource, headers, version, bodyRequest);
         }
-        bodyBuffer[bytesRead] = '\0';
-        string tipoContenido = headers.at("Content-Type");
-        Body bodyRequest = Body(tipoContenido, bodyBuffer,contentLength);
-        delete[] bodyBuffer;
-        return ParserRequest(metodo, resource, headers, version, bodyRequest);
+        else{
+            return ParserRequest(metodo, resource, headers, version);
+        }
     }
 
     return ParserRequest(metodo, resource, headers, version);
 }
-void ParserRequest::printRequest()
+string ParserRequest::requestToString()
 {
-    cout << "-------Inicia print request---------------" << endl;
-    cout << this->method << " " << this->resource << " " << this->version << " " << endl;
-    string headerString;
-    for (const auto &header : this->headers)
-    {
-        cout << header.first << ": " << header.second << endl;
-    }
-    cout << headerString << endl;
-    if (this->method=="POST")
-    {
-        cout << this->bodyReq.getBuffer() << endl;
-    }
-    
-    
-    cout << "-------termina print request---------------" << endl;
+    string request;
+    request += this->method + " " + this->resource + " " + this->version + " ";
+    return request;
 };

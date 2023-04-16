@@ -192,12 +192,12 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
         this->headers = cabecera;
         this->body = nuevoBody;
     }
-    else
+    else if(bodyReq.getLen()!=0)
     {
         fs::path inputPath = documentRootPath + path;
         string contentType = bodyReq.getDataType();
+        
         string extension = extensionFromContent(contentType);
-
         
         string downloadName;
         
@@ -221,6 +221,9 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
             string responseB="Archivo "+downloadName+" creado satisfactoriamente";
             Body nuevoBody = Body(contentType,responseB);
             this->body = nuevoBody;
+    }
+    else{
+        throw invalid_argument("BAD REQUEST");
     }
 }
 
@@ -317,4 +320,11 @@ int ParserResponse::writeFile(const std::string &filename, const char *buffer, s
         std::cerr << "Unable to open file for writing\n";
         return false;
     }
+}
+
+string ParserResponse::shortResponse()
+{
+    
+    string response= this->version +" "+ to_string(responseCode);
+    return response;
 }

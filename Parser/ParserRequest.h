@@ -16,7 +16,7 @@ public:
     ParserRequest(const string &method, const string &resource, const map<string, string> &headers, const string &version) noexcept;
     ParserRequest(const string &method, const string &resource, const map<string, string> &headers, const string &version, Body &bodyReq) noexcept;
     ~ParserRequest();
-    void printRequest();
+    string requestToString();
     const string &getMethod();
     const string &getVersion();
     const string &getResource();

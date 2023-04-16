@@ -3,20 +3,21 @@
 #include "Parser/ParserRequest.h"
 #include "Parser/ParserResponse.h"
 #include <csignal>
+#include "log/log.h"
 using namespace std;
 
 static string direccion_absoluta_DRF; // aquí declaro variable estática para guardar la dirAbsoluta del documentRootFolder
-
+log logObjet;
 void show_client_ip(const sockaddr_storage &client_addr)
 {
     //(IPv4 or IPv6)
     int addr_family = client_addr.ss_family;
 
-    // declare variables to hold the IP address and port number
+   
     char ip_str[INET6_ADDRSTRLEN];
     int port;
 
-    // cast the sockaddr_storage pointer to the appropriate address type
+    
     if (addr_family == AF_INET)
     {
         const sockaddr_in *addr = reinterpret_cast<const sockaddr_in *>(&client_addr);
@@ -68,10 +69,10 @@ void *handle_client(void *arg)
             if (content_length_str != NULL)
             {
                 content_length = atoi(content_length_str + strlen("Content-Length:"));
-                cout << content_length << endl;
+                
                 if (msgSize - (headerSize + 4) == content_length)
                 {
-                    cout<<buffer<<endl;
+                    
                     break;
                 }
             }
@@ -85,9 +86,18 @@ void *handle_client(void *arg)
     {
         
         ParserRequest requestCliente = ParserRequest::deserializeRequest(buffer);
-        requestCliente.printRequest();
+        string request=requestCliente.requestToString();
+        string tiempo = string(logObjet.getCurrentTime());
+        logObjet.appendToLog(request);
+        logObjet.appendToLog(tiempo);
+        cout<<request+'\n'<<tiempo<<endl;
         ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
         string res = RespuestaCliente.serializeResponse();
+        string tiempoRes = string(logObjet.getCurrentTime());
+        string shortResponse=RespuestaCliente.shortResponse();
+        logObjet.appendToLog(shortResponse);
+        logObjet.appendToLog(tiempoRes);
+        cout<<shortResponse+'\n'<<tiempoRes<<endl;
         strcpy(bufferEnvio, res.c_str());
         ssize_t bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
         if (bytes_sent == -1)
@@ -113,9 +123,14 @@ void *handle_client(void *arg)
     {
         cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
         ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
-        string hola = RespuestaCliente.serializeResponse();
-        strcpy(bufferEnvio, hola.c_str());
+        string errores = RespuestaCliente.serializeResponse();
+        string shortRes= RespuestaCliente.shortResponse()+" "+string(e.what());
+        logObjet.appendToLog(shortRes);
+        string tiempoRes = string(logObjet.getCurrentTime());
+        logObjet.appendToLog(tiempoRes);
+        strcpy(bufferEnvio, errores.c_str());
         int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+
     }
     close(socketCliente);
     pthread_exit(NULL);
@@ -196,17 +211,26 @@ int main(int argc, char const *argv[])
 {
     try
     {
+        int port=atoi(argv[1]);
         if (argc != 4)
         {
             throw invalid_argument("Faltan argumentos para ejecutar el servidor: <HTTP PORT> <Log File> <DocumentRootFolder>");
         }
         fs::path directorio(argv[3]);
+        if (port==0){
+             throw invalid_argument("Puerto no valido");
+        }
         if (!filesystem::exists(directorio))
         {
             throw runtime_error("Directorio para <DocumentRootFolder> no existe");
         }
         direccion_absoluta_DRF = fs::absolute(directorio).string();
-        serverIni(atoi(argv[1]));
+        string logName=argv[2];
+        logObjet= log();
+        logObjet.createLog(logName);
+
+        serverIni(port);
+        
     }
     catch (const exception &e)
     {

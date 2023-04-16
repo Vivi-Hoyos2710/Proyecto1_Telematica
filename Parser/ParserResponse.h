@@ -46,7 +46,7 @@ public:
     static string extraerExtension(string path);
     static string extensionFromContent(string rutaxd);
     static int writeFile(const std::string& filename, const char* buffer, size_t bufferSize);
-    
+    string shortResponse();
 };
 
 #endif

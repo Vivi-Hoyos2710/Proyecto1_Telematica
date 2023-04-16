@@ -1,0 +1,117 @@
+POST /CASO1/ HTTP/1.1 
+Sat Apr 15 22:15:52 2023
+
+HTTP/1.1 400 BAD REQUEST
+Sat Apr 15 22:15:52 2023
+
+GET /CASO1/ HTTP/1.1 
+Sat Apr 15 22:16:11 2023
+
+HTTP/1.1 404
+Sat Apr 15 22:16:11 2023
+
+HTTP/1.1 405 Method Not Allowed
+Sat Apr 15 22:16:44 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Sat Apr 15 22:17:34 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:17:34 2023
+
+GET /CASO4/css/style.css HTTP/1.1 
+Sat Apr 15 22:17:34 2023
+
+HTTP/1.1 404
+Sat Apr 15 22:17:34 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Sat Apr 15 22:17:35 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:17:35 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Sat Apr 15 22:17:35 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:17:35 2023
+
+GET /CASO1/index.html HTTP/1.1 
+Sat Apr 15 22:17:49 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:17:49 2023
+
+GET /prueba/index.html HTTP/1.1 
+Sat Apr 15 22:17:49 2023
+
+HTTP/1.1 404
+Sat Apr 15 22:17:49 2023
+
+GET /CASO1/index.html HTTP/1.1 
+Sat Apr 15 22:17:50 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:17:50 2023
+
+GET /CASO1/css/style.css HTTP/1.1 
+Sat Apr 15 22:17:51 2023
+
+HTTP/1.1 404
+Sat Apr 15 22:17:51 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+Sat Apr 15 22:17:51 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:17:51 2023
+
+GET /CASO2/index.html HTTP/1.1 
+Sat Apr 15 22:17:58 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:17:58 2023
+
+GET /Imagenes/response.jpeg HTTP/1.1 
+Sat Apr 15 22:17:58 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:17:58 2023
+
+GET /Imagenes/nyaan.png HTTP/1.1 
+Sat Apr 15 22:17:58 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:17:58 2023
+
+GET /Imagenes/nyaan.png HTTP/1.1 
+Sat Apr 15 22:17:58 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:17:58 2023
+
+GET /CASO2/index.html HTTP/1.1 
+Sat Apr 15 22:18:00 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:18:00 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+Sat Apr 15 22:18:01 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:18:01 2023
+
+GET /Imagenes/response.jpeg HTTP/1.1 
+Sat Apr 15 22:18:01 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:18:01 2023
+
+GET /Imagenes/nyaan.png HTTP/1.1 
+Sat Apr 15 22:18:01 2023
+
+HTTP/1.1 200
+Sat Apr 15 22:18:01 2023
+
