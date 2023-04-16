@@ -199,7 +199,7 @@ void serverIni(int puerto)
         show_client_ip(dir_client);
         pthread_t hiloClient;
         struct timeval timeout;
-        timeout.tv_sec = 10;
+        timeout.tv_sec = 5;
         timeout.tv_usec = 0;
         if (setsockopt(socketCliente, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout)) < 0) {
             perror("setsockopt");
