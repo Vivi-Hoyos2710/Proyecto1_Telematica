@@ -1,5 +1,5 @@
 #include "ParserResponse.h"
-
+#include <unistd.h>
 // constructores
 ParserResponse::ParserResponse(const string version) noexcept : version(version)
 {
@@ -134,7 +134,7 @@ void ParserResponse::handleHeadReq(string path,const string& documentRootPath)
         this->responseCode=OK;
         this->headers = cabecera;
         this->body = nuevoBody;
-
+        close(file_fd);
     }
     
 }
@@ -160,6 +160,7 @@ void ParserResponse::handleGetReq(string path, const string &documentRootPath)
         fs::path inputPath = documentRootPath + path; // aca concateno la document root y la path para usar el archivo
         const char *cstr = inputPath.c_str();
         int file_fd = open(cstr, O_RDONLY);
+        
         off_t offset = 0;
         struct stat file_stat;
         if (fstat(file_fd, &file_stat) < 0)
@@ -174,6 +175,7 @@ void ParserResponse::handleGetReq(string path, const string &documentRootPath)
         this->responseCode = OK;
         this->headers = cabecera;
         this->body = nuevoBody;
+        close(file_fd);
     }
 }
 void ParserResponse::handlePostReq(string path, const string &documentRootPath, Body bodyReq,map<string,string> headers) // funcion para manejar las recibidas de lo post
