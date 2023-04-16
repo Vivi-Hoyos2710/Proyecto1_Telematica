@@ -28,3 +28,5 @@ $(OBJ_DIR)utilityFunctions.o: $(DIR_UT)utilityFunctions.cpp $(DIR_UT)utilityFunc
 
 clean:
 	rm $(OBJ_DIR)*.o server
+cleanLog:
+	rm log/*.txt
