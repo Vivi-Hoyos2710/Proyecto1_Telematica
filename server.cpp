@@ -196,6 +196,14 @@ void serverIni(int puerto)
         }
         show_client_ip(dir_client);
         pthread_t hiloClient;
+        struct timeval timeout;
+        timeout.tv_sec = 10;
+        timeout.tv_usec = 0;
+        if (setsockopt(socketCliente, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout)) < 0) {
+            perror("setsockopt");
+            close(socketCliente);
+            continue;
+        }
         if (pthread_create(&hiloClient, NULL, handle_client, &socketCliente) != 0)
         {
             cerr << "Fallo al crear hilo para manejo de concurrencia de clientes" << endl;
