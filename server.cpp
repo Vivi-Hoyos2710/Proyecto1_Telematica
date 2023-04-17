@@ -64,17 +64,18 @@ void *handle_client(void *arg)
         {
             bytesBody = recv(socketCliente, bufferReq + msgSize, maxSize, 0);
             msgSize += bytesBody;
-            cout << msgSize << endl;
+            
         }
     }
     else{
-        bufferReq=buffer;
+        bufferReq = new char[RECV_BUFFER_SIZE];
+        memcpy(bufferReq, buffer, bytes_read);
     }
 
     try
     {
-        cout << "sale" << endl;
-        cout << bufferReq << endl;
+        
+        
         ParserRequest requestCliente = ParserRequest::deserializeRequest(bufferReq);
         string request = requestCliente.requestToString();
         string tiempo = string(logObjet.getCurrentTime());
