@@ -48,7 +48,11 @@ void *handle_client(void *arg)
     memset(buffer, 0, sizeof(buffer));
 
     bytes_read = recv(socketCliente, buffer, RECV_BUFFER_SIZE, 0);
-
+    if (bytes_read <= 0) {
+        perror("recv");
+        close(socketCliente);
+        return NULL;
+    }
     char *contentLengthStr = strstr(buffer, "Content-Length:");
 
     if (contentLengthStr != NULL)
@@ -64,17 +68,18 @@ void *handle_client(void *arg)
         {
             bytesBody = recv(socketCliente, bufferReq + msgSize, maxSize, 0);
             msgSize += bytesBody;
-            cout << msgSize << endl;
+            
         }
     }
     else{
-        bufferReq=buffer;
+        bufferReq = new char[RECV_BUFFER_SIZE];
+        memcpy(bufferReq, buffer, bytes_read);
     }
 
     try
     {
-        cout << "sale" << endl;
-        cout << bufferReq << endl;
+        
+        
         ParserRequest requestCliente = ParserRequest::deserializeRequest(bufferReq);
         string request = requestCliente.requestToString();
         string tiempo = string(logObjet.getCurrentTime());
@@ -107,6 +112,7 @@ void *handle_client(void *arg)
             if (bytes_sent == -1)
             {
                 std::cerr << "sendfile failed...\n";
+                close(socketCliente);
             }
             close(file_fd);
         }
@@ -125,6 +131,7 @@ void *handle_client(void *arg)
         strcpy(bufferEnvio, errores.c_str());
         int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
     }
+    delete [] bufferReq;
     close(socketCliente);
     pthread_exit(NULL);
 }
