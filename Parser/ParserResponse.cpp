@@ -60,6 +60,21 @@ string ParserResponse::extraerExtension(string rutaxd)
     {
         return "image/png";
     }
+    else if(extension == ".exe"){
+        return "application/octet-stream";
+    }
+    else if(extension == ".docx"){
+        return "application/msword";
+    }
+    else if(extension == ".xml"){
+        return "application/xml";
+    }
+    else if(extension == ".pptx"){
+        return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    }
+    else if(extension == ".xlsx"){
+        return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    }
     else
     {
         return "error";
@@ -67,7 +82,21 @@ string ParserResponse::extraerExtension(string rutaxd)
 }
 string ParserResponse::extensionFromContent(string contenido)
 {
-
+    if(contenido == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
+        return ".xlsx";
+    }
+    if(contenido == "application/xml"){
+        return ".xml";
+    }
+    if(contenido == "application/octet-stream"){
+        return ".exe";
+    }
+    if(contenido == "application/msword" || contenido == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
+        return ".docx";
+    }
+    if(contenido == "application/vnd.openxmlformats-officedocument.presentationml.presentation"){
+        return ".pptx";
+    }
     if (contenido == "image/jpeg")
     {
         return ".jpg";

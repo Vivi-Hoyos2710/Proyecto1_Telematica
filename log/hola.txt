@@ -184,3 +184,249 @@ Mon Apr 17 13:30:54 2023
 HTTP/1.1 200
 Mon Apr 17 13:30:54 2023
 
+GET /CASO1/index.html HTTP/1.1 
+Mon Apr 17 15:47:56 2023
+
+HTTP/1.1 200
+Mon Apr 17 15:47:56 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+Mon Apr 17 15:47:56 2023
+
+HTTP/1.1 200
+Mon Apr 17 15:47:56 2023
+
+GET /favicon.ico HTTP/1.1 
+Mon Apr 17 15:47:56 2023
+
+HTTP/1.1 404
+Mon Apr 17 15:47:56 2023
+
+GET /CASO2/index.html HTTP/1.1 
+Mon Apr 17 15:47:59 2023
+
+HTTP/1.1 200
+Mon Apr 17 15:47:59 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+GET /Imagenes/response.jpeg HTTP/1.1 
+GET /Imagenes/nyaan.png HTTP/1.1 
+Mon Apr 17 15:47:59 2023
+
+Mon Apr 17 15:47:59 2023
+
+Mon Apr 17 15:47:59 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 15:47:59 2023
+
+Mon Apr 17 15:47:59 2023
+
+Mon Apr 17 15:47:59 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 15:48:00 2023
+
+HTTP/1.1 200
+Mon Apr 17 15:48:00 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 15:48:00 2023
+
+Mon Apr 17 15:48:00 2023
+
+Mon Apr 17 15:48:00 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 15:48:00 2023
+
+Mon Apr 17 15:48:00 2023
+
+Mon Apr 17 15:48:00 2023
+
+GET /Archivos/bigText.txt HTTP/1.1 
+Mon Apr 17 15:48:06 2023
+
+HTTP/1.1 200
+Mon Apr 17 15:48:06 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 15:48:09 2023
+
+HTTP/1.1 200
+Mon Apr 17 15:48:09 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+Mon Apr 17 15:48:09 2023
+
+Mon Apr 17 15:48:09 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 15:48:09 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 15:48:09 2023
+
+Mon Apr 17 15:48:09 2023
+
+Mon Apr 17 15:48:09 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 15:48:54 2023
+
+HTTP/1.1 200
+Mon Apr 17 15:48:54 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+Mon Apr 17 15:48:54 2023
+
+Mon Apr 17 15:48:54 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 15:48:54 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 15:48:54 2023
+
+Mon Apr 17 15:48:54 2023
+
+HTTP/1.1 200
+Mon Apr 17 15:48:54 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 15:49:05 2023
+
+HTTP/1.1 200
+Mon Apr 17 15:49:05 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+Mon Apr 17 15:49:05 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 15:49:05 2023
+
+Mon Apr 17 15:49:05 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 15:49:05 2023
+
+Mon Apr 17 15:49:05 2023
+
+Mon Apr 17 15:49:05 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 15:49:07 2023
+
+HTTP/1.1 200
+Mon Apr 17 15:49:07 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 15:49:07 2023
+
+Mon Apr 17 15:49:07 2023
+
+Mon Apr 17 15:49:07 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 15:49:07 2023
+
+Mon Apr 17 15:49:07 2023
+
+Mon Apr 17 15:49:07 2023
+
+GET /Archivos/doc.doc HTTP/1.1 
+Mon Apr 17 16:37:31 2023
+
+HTTP/1.1 404
+Mon Apr 17 16:37:31 2023
+
+GET /Archivos/doc.docx HTTP/1.1 
+Mon Apr 17 16:37:44 2023
+
+HTTP/1.1 404
+Mon Apr 17 16:37:44 2023
+
+GET /Archivos/doc.docx HTTP/1.1 
+Mon Apr 17 16:39:21 2023
+
+HTTP/1.1 200
+Mon Apr 17 16:39:21 2023
+
+POST /Archivos HTTP/1.1 
+Mon Apr 17 16:41:47 2023
+
+HTTP/1.1 201
+Mon Apr 17 16:41:47 2023
+
+POST /Archivos HTTP/1.1 
+Mon Apr 17 16:43:58 2023
+
+HTTP/1.1 201
+Mon Apr 17 16:43:58 2023
+
+GET /Archivo/doc.docx HTTP/1.1 
+Mon Apr 17 16:45:03 2023
+
+HTTP/1.1 404
+Mon Apr 17 16:45:03 2023
+
+GET /Archivos/doc.docx HTTP/1.1 
+Mon Apr 17 16:45:23 2023
+
+HTTP/1.1 200
+Mon Apr 17 16:45:23 2023
+
+POST /Archivos HTTP/1.1 
+Mon Apr 17 16:47:34 2023
+
+HTTP/1.1 201
+Mon Apr 17 16:47:34 2023
+
+POST /xd HTTP/1.1 
+Mon Apr 17 17:40:22 2023
+
+HTTP/1.1 404
+Mon Apr 17 17:40:23 2023
+
+GET /Archivos/excel.xlsx HTTP/1.1 
+Mon Apr 17 17:46:38 2023
+
+HTTP/1.1 200
+Mon Apr 17 17:46:38 2023
+
+GET /Archivos/power.pptx HTTP/1.1 
+Mon Apr 17 17:46:51 2023
+
+HTTP/1.1 200
+Mon Apr 17 17:46:51 2023
+
+POST /Archivos HTTP/1.1 
+Mon Apr 17 17:47:26 2023
+
+HTTP/1.1 201
+Mon Apr 17 17:47:26 2023
+
+POST /Archivos HTTP/1.1 
+Mon Apr 17 17:48:07 2023
+
+HTTP/1.1 201
+Mon Apr 17 17:48:07 2023
+
