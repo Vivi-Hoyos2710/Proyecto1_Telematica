@@ -35,3 +35,26 @@ En este caso en especifico es
 Para probar los diferentes casos de prueba tenemos diversas carpetas y en el navegador pones tu la ip que tu hayas puesto en las constantes si es localhost pones 
 ```127.0.0.1:8080/CASO1/index.html```
 
+## 4. Pruebas del trabajo
+En la primera api que tenemos esta el caso de prueba donde tenemos una pagina web con varios links y una imagen
+
+```/CASO1/index.html```
+
+El segundo caso de prueba tenemos varias imagenes  y links 
+```/CASO2/index.html```
+
+El tercer caso de prueba que tenemos es un archivo que pese 1MB
+
+```/Archivos/bigText.txt```
+
+El cuarto paso de prueba es una pagina web donde tenemos links y varias imagenes de 1MB
+
+```/CASO4/index.html```
+
+A estas 4 apis les puedes hacer GET O HEAD. Tambien tenemos otra api ```/Imagenes``` Y aca puedes hacer POST de archivos que quieras o en el api ```/Archivos``` 
+
+
+
+
+
+
