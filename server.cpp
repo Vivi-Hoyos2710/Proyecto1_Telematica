@@ -48,7 +48,11 @@ void *handle_client(void *arg)
     memset(buffer, 0, sizeof(buffer));
 
     bytes_read = recv(socketCliente, buffer, RECV_BUFFER_SIZE, 0);
-
+    if (bytes_read <= 0) {
+        perror("recv");
+        close(socketCliente);
+        return NULL;
+    }
     char *contentLengthStr = strstr(buffer, "Content-Length:");
 
     if (contentLengthStr != NULL)
@@ -126,6 +130,7 @@ void *handle_client(void *arg)
         strcpy(bufferEnvio, errores.c_str());
         int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
     }
+    delete [] bufferReq;
     close(socketCliente);
     pthread_exit(NULL);
 }
