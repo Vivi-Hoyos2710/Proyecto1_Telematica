@@ -112,6 +112,7 @@ void *handle_client(void *arg)
             if (bytes_sent == -1)
             {
                 std::cerr << "sendfile failed...\n";
+                close(socketCliente);
             }
             close(file_fd);
         }
