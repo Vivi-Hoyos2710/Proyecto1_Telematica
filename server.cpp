@@ -232,7 +232,7 @@ int main(int argc, char const *argv[])
         logObjet.createLog(logName);
 
         serverIni(port);
-     }
+    }
     catch (const exception &e)
     {
         cerr << e.what() << '\n';
