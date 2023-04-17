@@ -13,11 +13,9 @@ void show_client_ip(const sockaddr_storage &client_addr)
     //(IPv4 or IPv6)
     int addr_family = client_addr.ss_family;
 
-   
     char ip_str[INET6_ADDRSTRLEN];
     int port;
 
-    
     if (addr_family == AF_INET)
     {
         const sockaddr_in *addr = reinterpret_cast<const sockaddr_in *>(&client_addr);
@@ -39,65 +37,59 @@ void *handle_client(void *arg)
 {
     int socketCliente = *(int *)arg;
     char buffer[RECV_BUFFER_SIZE];
-    char bodyBuffer[RECV_BUFFER_SIZE];
+    char *bufferReq;
     char bufferEnvio[RECV_BUFFER_SIZE];
     int bytes_read;
     int msgSize = 0;
     int content_length = 0;
-    bool greater;
+    int bytesBody = 0;
     // Receive data from the client
     // limpio buffer antes de leer.
-    memset(buffer, 0, sizeof(buffer)); // clear the buffer before reading
-    while (true)
-    {
-        
-        bytes_read = recv(socketCliente, buffer + msgSize, RECV_BUFFER_SIZE - msgSize, 0);
-        if (bytes_read <= 0)
-        {
-            close(socketCliente);
-            
+    memset(buffer, 0, sizeof(buffer));
 
-            break;
-        }
-        msgSize += bytes_read;
-        buffer[msgSize] = '\0';
+    bytes_read = recv(socketCliente, buffer, RECV_BUFFER_SIZE, 0);
+
+    char *contentLengthStr = strstr(buffer, "Content-Length:");
+
+    if (contentLengthStr != NULL)
+    {
         char *end = strstr(buffer, "\r\n\r\n");
         int headerSize = end - buffer;
-        if (end != NULL)
+        content_length = atoi(contentLengthStr + strlen("Content-Length:"));
+        msgSize += bytes_read;
+        int maxSize = content_length + headerSize + 4;
+        bufferReq = new char[maxSize + 1];
+        memcpy(bufferReq, buffer, bytes_read);
+        while (msgSize < maxSize)
         {
-            char *content_length_str = strstr(buffer, "Content-Length:");
-            if (content_length_str != NULL)
-            {
-                content_length = atoi(content_length_str + strlen("Content-Length:"));
-                
-                if (msgSize - (headerSize + 4) == content_length)
-                {
-                    
-                    break;
-                }
-            }
-            else
-            {
-                break;
-            }
+            bytesBody = recv(socketCliente, bufferReq + msgSize, maxSize, 0);
+            msgSize += bytesBody;
+            cout << msgSize << endl;
         }
     }
+    else{
+        bufferReq=buffer;
+    }
+
     try
     {
-        
-        ParserRequest requestCliente = ParserRequest::deserializeRequest(buffer);
-        string request=requestCliente.requestToString();
+        cout << "sale" << endl;
+        cout << bufferReq << endl;
+        ParserRequest requestCliente = ParserRequest::deserializeRequest(bufferReq);
+        string request = requestCliente.requestToString();
         string tiempo = string(logObjet.getCurrentTime());
         logObjet.appendToLog(request);
         logObjet.appendToLog(tiempo);
-        cout<<request+'\n'<<tiempo<<endl;
+        cout << request + '\n'
+             << tiempo << endl;
         ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
         string res = RespuestaCliente.serializeResponse();
         string tiempoRes = string(logObjet.getCurrentTime());
-        string shortResponse=RespuestaCliente.shortResponse();
+        string shortResponse = RespuestaCliente.shortResponse();
         logObjet.appendToLog(shortResponse);
         logObjet.appendToLog(tiempoRes);
-        cout<<shortResponse+'\n'<<tiempoRes<<endl;
+        cout << shortResponse + '\n'
+             << tiempoRes << endl;
         strcpy(bufferEnvio, res.c_str());
         ssize_t bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
         if (bytes_sent == -1)
@@ -126,13 +118,12 @@ void *handle_client(void *arg)
         cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
         ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
         string errores = RespuestaCliente.serializeResponse();
-        string shortRes= RespuestaCliente.shortResponse()+" "+string(e.what());
+        string shortRes = RespuestaCliente.shortResponse() + " " + string(e.what());
         logObjet.appendToLog(shortRes);
         string tiempoRes = string(logObjet.getCurrentTime());
         logObjet.appendToLog(tiempoRes);
         strcpy(bufferEnvio, errores.c_str());
         int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
-
     }
     close(socketCliente);
     pthread_exit(NULL);
@@ -154,8 +145,8 @@ void serverIni(int puerto)
     else
     {
         printf("Socket creado \n");
-        int opt = 1;
     }
+
     // Bind del socket => asiganción ip y puerto
     struct sockaddr_in addr;
 
@@ -198,7 +189,7 @@ void serverIni(int puerto)
         }
         show_client_ip(dir_client);
         pthread_t hiloClient;
-        
+
         if (pthread_create(&hiloClient, NULL, handle_client, &socketCliente) != 0)
         {
             cerr << "Fallo al crear hilo para manejo de concurrencia de clientes" << endl;
@@ -214,26 +205,26 @@ int main(int argc, char const *argv[])
 {
     try
     {
-        int port=atoi(argv[1]);
+        int port = atoi(argv[1]);
         if (argc != 4)
         {
             throw invalid_argument("Faltan argumentos para ejecutar el servidor: <HTTP PORT> <Log File> <DocumentRootFolder>");
         }
         fs::path directorio(argv[3]);
-        if (port==0){
-             throw invalid_argument("Puerto no valido");
+        if (port == 0)
+        {
+            throw invalid_argument("Puerto no valido");
         }
         if (!filesystem::exists(directorio))
         {
             throw runtime_error("Directorio para <DocumentRootFolder> no existe");
         }
         direccion_absoluta_DRF = fs::absolute(directorio).string();
-        string logName=argv[2];
-        logObjet= log();
+        string logName = argv[2];
+        logObjet = log();
         logObjet.createLog(logName);
 
         serverIni(port);
-        
     }
     catch (const exception &e)
     {
