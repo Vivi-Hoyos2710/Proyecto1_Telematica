@@ -60,19 +60,24 @@ string ParserResponse::extraerExtension(string rutaxd)
     {
         return "image/png";
     }
-    else if(extension == ".exe"){
+    else if (extension == ".exe")
+    {
         return "application/octet-stream";
     }
-    else if(extension == ".docx"){
+    else if (extension == ".docx")
+    {
         return "application/msword";
     }
-    else if(extension == ".xml"){
+    else if (extension == ".xml")
+    {
         return "application/xml";
     }
-    else if(extension == ".pptx"){
+    else if (extension == ".pptx")
+    {
         return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
     }
-    else if(extension == ".xlsx"){
+    else if (extension == ".xlsx")
+    {
         return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     }
     else
@@ -82,19 +87,24 @@ string ParserResponse::extraerExtension(string rutaxd)
 }
 string ParserResponse::extensionFromContent(string contenido)
 {
-    if(contenido == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
+    if (contenido == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    {
         return ".xlsx";
     }
-    if(contenido == "application/xml"){
+    if (contenido == "application/xml")
+    {
         return ".xml";
     }
-    if(contenido == "application/octet-stream" || contenido == "application/x-msdos-program"){
+    if (contenido == "application/octet-stream" || contenido == "application/x-msdos-program")
+    {
         return ".exe";
     }
-    if(contenido == "application/msword" || contenido == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
+    if (contenido == "application/msword" || contenido == "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    {
         return ".docx";
     }
-    if(contenido == "application/vnd.openxmlformats-officedocument.presentationml.presentation"){
+    if (contenido == "application/vnd.openxmlformats-officedocument.presentationml.presentation")
+    {
         return ".pptx";
     }
     if (contenido == "image/jpeg")
@@ -140,36 +150,34 @@ Body ParserResponse::getBody()
 }
 
 // Metodos
-void ParserResponse::handleHeadReq(string path,const string& documentRootPath)
+void ParserResponse::handleHeadReq(string path, const string &documentRootPath)
 {
- int existe = verificarDir(path,documentRootPath);
-   if (!existe || extraerExtension(path).compare("error") == 0)
+    int existe = verificarDir(path, documentRootPath);
+    if (!existe || extraerExtension(path).compare("error") == 0)
     {
         // no encontro la ruta
         this->responseCode = NOT_FOUND;
-        Body nuevoBody= Body(); 
-        map<string,string> cabecera = {};
+        Body nuevoBody = Body();
+        map<string, string> cabecera = {};
         this->headers = cabecera;
         this->body = nuevoBody;
     }
-    else{
+    else
+    {
         string tipo = extraerExtension(path);
         fs::path inputPath = documentRootPath + path; // aca concateno la document root y la path para usar el archivo
         const char *cstr = inputPath.c_str();
         int file_fd = open(cstr, O_RDONLY);
         off_t offset = 0;
         struct stat file_stat;
-        map<string,string> cabecera = {
+        map<string, string> cabecera = {
             {"Content-Type", tipo},
-            {"Content-Length", to_string(file_stat.st_size)}
-        };
-        Body nuevoBody= Body();
-        this->responseCode=OK;
+            {"Content-Length", to_string(file_stat.st_size)}};
+        Body nuevoBody = Body();
+        this->responseCode = OK;
         this->headers = cabecera;
         this->body = nuevoBody;
-        
     }
-    
 }
 void ParserResponse::handleGetReq(string path, const string &documentRootPath)
 { // con esta funcion estamos manejando los get que nos mandan
@@ -193,25 +201,31 @@ void ParserResponse::handleGetReq(string path, const string &documentRootPath)
         fs::path inputPath = documentRootPath + path; // aca concateno la document root y la path para usar el archivo
         const char *cstr = inputPath.c_str();
         int file_fd = open(cstr, O_RDONLY);
-        
-        off_t offset = 0;
-        struct stat file_stat;
-        if (fstat(file_fd, &file_stat) < 0)
+        if (file_fd == -1)
         {
-            cout << "Error al obtener la información del archivo" << endl;
+            cerr << "Error abriendo archivo de lectura" << endl;
+            
         }
-        fstat(file_fd, &file_stat);
-        Body nuevoBody = Body(tipo, file_fd, offset, file_stat.st_size);
-        map<string, string> cabecera = {
-            {"Content-Type", tipo},
-            {"Content-Length", to_string(file_stat.st_size)}};
-        this->responseCode = OK;
-        this->headers = cabecera;
-        this->body = nuevoBody;
-       
+        else
+        {
+            off_t offset = 0;
+            struct stat file_stat;
+            if (fstat(file_fd, &file_stat) < 0)
+            {
+                cout << "Error al obtener la información del archivo" << endl;
+            }
+            fstat(file_fd, &file_stat);
+            Body nuevoBody = Body(tipo, file_fd, offset, file_stat.st_size);
+            map<string, string> cabecera = {
+                {"Content-Type", tipo},
+                {"Content-Length", to_string(file_stat.st_size)}};
+            this->responseCode = OK;
+            this->headers = cabecera;
+            this->body = nuevoBody;
+        }
     }
 }
-void ParserResponse::handlePostReq(string path, const string &documentRootPath, Body bodyReq,map<string,string> headers) // funcion para manejar las recibidas de lo post
+void ParserResponse::handlePostReq(string path, const string &documentRootPath, Body bodyReq, map<string, string> headers) // funcion para manejar las recibidas de lo post
 {
     int existe = verificarDir(path, documentRootPath);
     if (!existe || !extraerExtension(path).compare("error") == 0)
@@ -227,23 +241,27 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
         this->headers = cabecera;
         this->body = nuevoBody;
     }
-    else if(bodyReq.getLen()!=0)
+    else if (bodyReq.getLen() != 0)
     {
         fs::path inputPath = documentRootPath + path;
         string contentType = bodyReq.getDataType();
-        
+
         string extension = extensionFromContent(contentType);
-        
+
         string downloadName;
-        
-        if (headers.find("nameFile")!=headers.end())
-        {   //encuentra nombre de archivo en los headers de la request.
-            
-            downloadName= headers.at("nameFile");}
+
+        if (headers.find("nameFile") != headers.end())
+        { // encuentra nombre de archivo en los headers de la request.
+
+            downloadName = headers.at("nameFile");
+        }
         // nombre deafult
-        else{downloadName="defaultName";}
-        
-        string nameFile = inputPath.string()+"/"+ downloadName + extension;
+        else
+        {
+            downloadName = "defaultName";
+        }
+
+        string nameFile = inputPath.string() + "/" + downloadName + extension;
 
         bool creado = writeFile(nameFile, bodyReq.getBuffer(), bodyReq.getLen());
         if (creado)
@@ -251,13 +269,14 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
             this->responseCode = CREATED;
         }
         map<string, string> cabecera = {
-            {"Location", path+"/"+downloadName}};
-            this->headers = cabecera;
-            string responseB="Archivo "+downloadName+" creado satisfactoriamente";
-            Body nuevoBody = Body(contentType,responseB);
-            this->body = nuevoBody;
+            {"Location", path + "/" + downloadName}};
+        this->headers = cabecera;
+        string responseB = "Archivo " + downloadName + " creado satisfactoriamente";
+        Body nuevoBody = Body(contentType, responseB);
+        this->body = nuevoBody;
     }
-    else{
+    else
+    {
         throw invalid_argument("BAD REQUEST");
     }
 }
@@ -276,7 +295,7 @@ ParserResponse ParserResponse::deserializeResponse(ParserRequest &request, const
     }
     else
     {
-        RespuestaCliente.handlePostReq(request.getResource(), absPath, request.getBody(),request.getHeaders());
+        RespuestaCliente.handlePostReq(request.getResource(), absPath, request.getBody(), request.getHeaders());
     }
     return RespuestaCliente;
 }
@@ -285,7 +304,7 @@ string ParserResponse::serializeResponse()
     string response_str;
 
     // Primera linea de respuesta
-    response_str += this->version +" "+ to_string(responseCode) + "\r\n";
+    response_str += this->version + " " + to_string(responseCode) + "\r\n";
 
     // Headers
     for (const auto &header : headers)
@@ -342,7 +361,7 @@ ParserResponse ParserResponse::handleMacroErrors(const string error)
 }
 int ParserResponse::writeFile(const std::string &filename, const char *buffer, size_t bufferSize)
 {
-    std::ofstream file(filename,std::ios::binary);
+    std::ofstream file(filename, std::ios::binary);
     if (file.is_open())
     {
         file.write(buffer, bufferSize);
@@ -359,7 +378,7 @@ int ParserResponse::writeFile(const std::string &filename, const char *buffer, s
 
 string ParserResponse::shortResponse()
 {
-    
-    string response= this->version +" "+ to_string(responseCode);
+
+    string response = this->version + " " + to_string(responseCode);
     return response;
 }

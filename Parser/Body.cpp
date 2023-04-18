@@ -49,6 +49,11 @@ void Body::setData(const string &newData)
     this->data = newData;
 }
 
+void Body::closeFile()
+{
+    close(this->file_fd);
+}
+
 Body::~Body()
 {
 }

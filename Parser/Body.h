@@ -1,6 +1,7 @@
 #ifndef BODY_REQ
 #define BODY_REQ
 #include "../Librerias/StringLibraries.h"
+#include <unistd.h>
 using namespace std;
 class Body
 {
@@ -29,6 +30,7 @@ public:
     const char* getBuffer() const;
     //setters
     void setData(const string& newData);
+    void closeFile();
     
 };
 #endif

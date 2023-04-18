@@ -4,6 +4,7 @@
 #include "Parser/ParserResponse.h"
 #include <csignal>
 #include "log/log.h"
+
 using namespace std;
 
 static string direccion_absoluta_DRF; // aquí declaro variable estática para guardar la dirAbsoluta del documentRootFolder
@@ -113,7 +114,8 @@ void *handle_client(void *arg)
                 if (sent <= 0){
                     // Error or end of file
                     if (sent != 0)
-                    perror("sendfile");  // Was an error, report it
+                    perror("sendfile");
+                    RespuestaCliente.getBody().closeFile();
                     break;
                     }
                     size_to_send -= sent;  // Decrease the length to send by the amount actually sent
