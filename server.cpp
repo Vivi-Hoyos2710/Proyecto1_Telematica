@@ -57,7 +57,8 @@ void *handle_client(void *arg)
 
     if (contentLengthStr == NULL)
     {
-        bufferReq=buffer;
+        bufferReq = new char[RECV_BUFFER_SIZE];
+        memcpy(bufferReq, buffer, RECV_BUFFER_SIZE);
     }
     else{
         char *end = strstr(buffer, "\r\n\r\n");
