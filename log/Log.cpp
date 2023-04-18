@@ -18,7 +18,7 @@ char *log::getCurrentTime()
 void log::createLog(std::string &logName)
 {
     
-    std::string archivo = "./log/"+ logName+".txt";
+    std::string archivo = "./log/logFiles/"+ logName+".txt";
     this->path=archivo;
     std::fstream file(archivo, std::ios::in | std::ios::out);
     if (!file)
