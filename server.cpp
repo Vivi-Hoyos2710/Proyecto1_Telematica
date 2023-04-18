@@ -55,8 +55,11 @@ void *handle_client(void *arg)
     }
     char *contentLengthStr = strstr(buffer, "Content-Length:");
 
-    if (contentLengthStr != NULL)
+    if (contentLengthStr == NULL)
     {
+        bufferReq=buffer;
+    }
+    else{
         char *end = strstr(buffer, "\r\n\r\n");
         int headerSize = end - buffer;
         content_length = atoi(contentLengthStr + strlen("Content-Length:"));
@@ -70,10 +73,6 @@ void *handle_client(void *arg)
             msgSize += bytesBody;
             
         }
-    }
-    else{
-        bufferReq = new char[RECV_BUFFER_SIZE];
-        memcpy(bufferReq, buffer, bytes_read);
     }
 
     try
