@@ -120,6 +120,7 @@ void *handle_client(void *arg)
                     }
                     size_to_send -= sent;  // Decrease the length to send by the amount actually sent
                     }
+        RespuestaCliente.getBody().closeFile();
         memset(bufferEnvio, 0, sizeof(buffer));
         }
     }
