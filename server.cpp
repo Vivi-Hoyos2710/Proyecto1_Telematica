@@ -131,7 +131,9 @@ void *handle_client(void *arg)
         logObjet.appendToLog(tiempoRes);
         strcpy(bufferEnvio, errores.c_str());
         int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+        delete [] bufferReq;
     }
+    
     delete [] bufferReq;
     close(socketCliente);
     pthread_exit(NULL);
