@@ -4,4 +4,4 @@ server
 *.obj
 *.lib
 *.exe
-log/logFiles/
+
