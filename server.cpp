@@ -105,19 +105,21 @@ void *handle_client(void *arg)
         if (requestCliente.getMethod() == "GET" && RespuestaCliente.getBody().getData() == "")
         {
             int file_fd = RespuestaCliente.getBody().getFile_fd();
-            off_t offset = RespuestaCliente.getBody().getOffset();
+            off_t offset =0;
             ssize_t count = RespuestaCliente.getBody().getCount();
-            ssize_t bytes_sent = sendfile(socketCliente, file_fd, &offset, count);
-
-            if (bytes_sent == -1)
-            {
-                std::cerr << "sendfile failed...\n";
-                close(socketCliente);
-            }
-            close(file_fd);
-        }
-
+            
+            for (size_t size_to_send = count; size_to_send > 0; ){
+                ssize_t sent = sendfile(socketCliente, file_fd, &offset, count);
+                if (sent <= 0){
+                    // Error or end of file
+                    if (sent != 0)
+                    perror("sendfile");  // Was an error, report it
+                    break;
+                    }
+                    size_to_send -= sent;  // Decrease the length to send by the amount actually sent
+                    }
         memset(bufferEnvio, 0, sizeof(buffer));
+        }
     }
     catch (const exception &e) // Errores de sintaxis en la escritura del request.
     {

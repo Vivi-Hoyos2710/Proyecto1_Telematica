@@ -2926,3 +2926,273 @@ Mon Apr 17 23:33:56 2023
 HTTP/1.1 200
 Mon Apr 17 23:33:56 2023
 
+GET /CASO3/index.html HTTP/1.1 
+Mon Apr 17 23:35:11 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:11 2023
+
+GET /CASO1/index.html HTTP/1.1 
+Mon Apr 17 23:35:12 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:12 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+Mon Apr 17 23:35:12 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:12 2023
+
+GET /CASO2/index.html HTTP/1.1 
+Mon Apr 17 23:35:15 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:15 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+Mon Apr 17 23:35:16 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:16 2023
+
+GET /Imagenes/response.jpeg HTTP/1.1 
+Mon Apr 17 23:35:16 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:16 2023
+
+GET /Imagenes/nyaan.png HTTP/1.1 
+Mon Apr 17 23:35:16 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:16 2023
+
+GET /CASO3/index.html HTTP/1.1 
+Mon Apr 17 23:35:18 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:18 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:35:19 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:19 2023
+
+GET /Imagenes/cat.gif HTTP/1.1 
+Mon Apr 17 23:35:19 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:19 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 23:35:19 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:19 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Mon Apr 17 23:35:19 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:19 2023
+
+GET /CASO3/index.html HTTP/1.1 
+Mon Apr 17 23:35:21 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:21 2023
+
+GET /CASO1/index.html HTTP/1.1 
+Mon Apr 17 23:35:32 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:32 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+Mon Apr 17 23:35:32 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:32 2023
+
+GET /CASO2/index.html HTTP/1.1 
+Mon Apr 17 23:35:33 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:33 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+Mon Apr 17 23:35:33 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:33 2023
+
+GET /Imagenes/response.jpeg HTTP/1.1 
+Mon Apr 17 23:35:33 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:33 2023
+
+GET /Imagenes/nyaan.png HTTP/1.1 
+Mon Apr 17 23:35:33 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:35:33 2023
+
+GET /CASO1/index.html HTTP/1.1 
+Tue Apr 18 07:42:41 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:41 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+Tue Apr 18 07:42:41 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:41 2023
+
+GET /favicon.ico HTTP/1.1 
+Tue Apr 18 07:42:41 2023
+
+HTTP/1.1 404
+Tue Apr 18 07:42:41 2023
+
+GET /CASO3/index.html HTTP/1.1 
+Tue Apr 18 07:42:43 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:43 2023
+
+GET /CASO1/index.html HTTP/1.1 
+Tue Apr 18 07:42:45 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:45 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+Tue Apr 18 07:42:45 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:45 2023
+
+GET /CASO2/index.html HTTP/1.1 
+Tue Apr 18 07:42:46 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:46 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+GET /Imagenes/response.jpeg HTTP/1.1 
+Tue Apr 18 07:42:47 2023
+
+Tue Apr 18 07:42:47 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:47 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:47 2023
+
+GET /Imagenes/nyaan.png HTTP/1.1 
+Tue Apr 18 07:42:47 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:47 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Tue Apr 18 07:42:49 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:49 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Tue Apr 18 07:42:49 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:49 2023
+
+GET /Imagenes/cat.gif HTTP/1.1 
+Tue Apr 18 07:42:49 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:49 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Tue Apr 18 07:42:49 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:49 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Tue Apr 18 07:42:51 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:51 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Tue Apr 18 07:42:52 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:52 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Tue Apr 18 07:42:52 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:52 2023
+
+GET /Imagenes/cat.gif HTTP/1.1 
+Tue Apr 18 07:42:52 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:52 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Tue Apr 18 07:42:54 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:54 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Tue Apr 18 07:42:54 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:54 2023
+
+GET /Imagenes/cat.gif HTTP/1.1 
+Tue Apr 18 07:42:54 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:54 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Tue Apr 18 07:42:54 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:54 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Tue Apr 18 07:42:56 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:56 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Tue Apr 18 07:42:56 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:56 2023
+
+GET /Imagenes/cat.gif HTTP/1.1 
+Tue Apr 18 07:42:56 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:56 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Tue Apr 18 07:42:56 2023
+
+HTTP/1.1 200
+Tue Apr 18 07:42:56 2023
+
