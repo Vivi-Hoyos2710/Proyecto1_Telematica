@@ -200,29 +200,30 @@ void ParserResponse::handleGetReq(string path, const string &documentRootPath)
         string tipo = extraerExtension(path);         // Pendiente como hacer para organizar el content type segun el archivo
         fs::path inputPath = documentRootPath + path; // aca concateno la document root y la path para usar el archivo
         const char *cstr = inputPath.c_str();
-        int file_fd = open(cstr, O_RDONLY);
-        if (file_fd == -1)
+        int file_fd = -1;
+        while (file_fd == -1)
         {
-            cerr << "Error abriendo archivo de lectura" << endl;
-            
-        }
-        else
-        {
-            off_t offset = 0;
-            struct stat file_stat;
-            if (fstat(file_fd, &file_stat) < 0)
+            file_fd = open(cstr, O_RDONLY);
+            if (file_fd == -1)
             {
-                cout << "Error al obtener la información del archivo" << endl;
+                cerr << "error" << endl;
             }
-            fstat(file_fd, &file_stat);
-            Body nuevoBody = Body(tipo, file_fd, offset, file_stat.st_size);
-            map<string, string> cabecera = {
-                {"Content-Type", tipo},
-                {"Content-Length", to_string(file_stat.st_size)}};
-            this->responseCode = OK;
-            this->headers = cabecera;
-            this->body = nuevoBody;
         }
+
+        off_t offset = 0;
+        struct stat file_stat;
+        if (fstat(file_fd, &file_stat) < 0)
+        {
+            cout << "Error al obtener la información del archivo" << endl;
+        }
+        fstat(file_fd, &file_stat);
+        Body nuevoBody = Body(tipo, file_fd, offset, file_stat.st_size);
+        map<string, string> cabecera = {
+            {"Content-Type", tipo},
+            {"Content-Length", to_string(file_stat.st_size)}};
+        this->responseCode = OK;
+        this->headers = cabecera;
+        this->body = nuevoBody;
     }
 }
 void ParserResponse::handlePostReq(string path, const string &documentRootPath, Body bodyReq, map<string, string> headers) // funcion para manejar las recibidas de lo post
