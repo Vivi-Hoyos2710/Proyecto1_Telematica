@@ -40,102 +40,124 @@ void *handle_client(void *arg)
     char buffer[RECV_BUFFER_SIZE];
     char *bufferReq;
     char bufferEnvio[RECV_BUFFER_SIZE];
-    int bytes_read=0;
+    int bytes_read = 0;
     int msgSize = 0;
     int content_length = 0;
     int bytesBody = 0;
-    // Receive data from the client
-    // limpio buffer antes de leer.
-    memset(buffer, 0, sizeof(buffer));
-
-    bytes_read = recv(socketCliente, buffer, RECV_BUFFER_SIZE, 0);
-    if (bytes_read <= 0) {
-        perror("recv");
-        return NULL;
-    }
-    char *contentLengthStr = strstr(buffer, "Content-Length:");
-
-    if (contentLengthStr != NULL)
+    bool keepAlive = true;
+    while (keepAlive)
     {
-        char *end = strstr(buffer, "\r\n\r\n");
-        int headerSize = end - buffer;
-        content_length = atoi(contentLengthStr + strlen("Content-Length:"));
-        msgSize += bytes_read;
-        int maxSize = content_length + headerSize + 4;
-        bufferReq = new char[maxSize + 1];
-        memcpy(bufferReq, buffer, bytes_read);
-        while (msgSize < maxSize)
+        // limpio buffer antes de leer.
+        memset(buffer, 0, sizeof(buffer));
+        bytes_read = recv(socketCliente, buffer, RECV_BUFFER_SIZE, 0);
+        if (bytes_read < 0)
         {
-            bytesBody = recv(socketCliente, bufferReq + msgSize, maxSize, 0);
-            msgSize += bytesBody;
-            
+            perror("recv");
+            keepAlive = false;
+            return NULL;
         }
-    }
-    else{
-        bufferReq = new char[RECV_BUFFER_SIZE];
-        memcpy(bufferReq, buffer, bytes_read);
-    }
+        char *contentLengthStr = strstr(buffer, "Content-Length:");
 
-    try
-    {
-        
-        
-        ParserRequest requestCliente = ParserRequest::deserializeRequest(bufferReq);
-        string request = requestCliente.requestToString();
-        string tiempo = string(logObjet.getCurrentTime());
-        logObjet.appendToLog(request);
-        logObjet.appendToLog(tiempo);
-        cout << request + '\n'
-             << tiempo << endl;
-        ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
-        string res = RespuestaCliente.serializeResponse();
-        string tiempoRes = string(logObjet.getCurrentTime());
-        string shortResponse = RespuestaCliente.shortResponse();
-        logObjet.appendToLog(shortResponse);
-        logObjet.appendToLog(tiempoRes);
-        cout << shortResponse + '\n'
-             << tiempoRes << endl;
-        strcpy(bufferEnvio, res.c_str());
-        ssize_t bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
-        if (bytes_sent == -1)
+        if (contentLengthStr != NULL)
         {
-            std::cerr << "error enviando response...\n";
+            char *end = strstr(buffer, "\r\n\r\n");
+            int headerSize = end - buffer;
+            content_length = atoi(contentLengthStr + strlen("Content-Length:"));
+            msgSize += bytes_read;
+            int maxSize = content_length + headerSize + 4;
+            bufferReq = new char[maxSize + 1];
+            memcpy(bufferReq, buffer, bytes_read);
+            while (msgSize < maxSize)
+            {
+                bytesBody = recv(socketCliente, bufferReq + msgSize, maxSize, 0);
+                msgSize += bytesBody;
+            }
+        }
+        else
+        {
+            bufferReq = new char[RECV_BUFFER_SIZE];
+            memcpy(bufferReq, buffer, bytes_read);
         }
 
-        if (requestCliente.getMethod() == "GET" && RespuestaCliente.getBody().getData() == "")
+        try
         {
-            int file_fd = RespuestaCliente.getBody().getFile_fd();
-            off_t offset =0;
-            ssize_t count = RespuestaCliente.getBody().getCount();
-            
-            for (size_t size_to_send = count; size_to_send > 0; ){
-                ssize_t sent = sendfile(socketCliente, file_fd, &offset, count);
-                if (sent <= 0){
-                    // Error or end of file
-                    if (sent != 0)
-                    perror("sendfile");
-                    RespuestaCliente.getBody().closeFile();
-                    break;
+
+            ParserRequest requestCliente = ParserRequest::deserializeRequest(bufferReq);
+            string request = requestCliente.requestToString();
+            string tiempo = string(logObjet.getCurrentTime());
+            logObjet.appendToLog(request);
+            logObjet.appendToLog(tiempo);
+            cout << request + '\n'
+                 << tiempo << endl;
+            ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
+            string res = RespuestaCliente.serializeResponse();
+            string tiempoRes = string(logObjet.getCurrentTime());
+            string shortResponse = RespuestaCliente.shortResponse();
+            logObjet.appendToLog(shortResponse);
+            logObjet.appendToLog(tiempoRes);
+            cout << shortResponse + '\n'
+                 << tiempoRes << endl;
+            strcpy(bufferEnvio, res.c_str());
+            ssize_t bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+            if (bytes_sent == -1)
+            {
+                std::cerr << "error enviando response...\n";
+            }
+
+            if (requestCliente.getMethod() == "GET" && RespuestaCliente.getBody().getData() == "")
+            {
+                int file_fd = RespuestaCliente.getBody().getFile_fd();
+                off_t offset = 0;
+                ssize_t count = RespuestaCliente.getBody().getCount();
+
+                for (size_t size_to_send = count; size_to_send > 0;)
+                {
+                    ssize_t sent = sendfile(socketCliente, file_fd, &offset, count);
+                    if (sent <= 0)
+                    {
+                        // Error or end of file
+                        if (sent != 0)
+                            perror("sendfile");
+                        RespuestaCliente.getBody().closeFile();
+                        break;
                     }
-                    size_to_send -= sent;  // Decrease the length to send by the amount actually sent
-                    }
-        RespuestaCliente.getBody().closeFile();
-        memset(bufferEnvio, 0, sizeof(buffer));
+                    size_to_send -= sent; // Decrease the length to send by the amount actually sent
+                }
+                RespuestaCliente.getBody().closeFile();
+                memset(bufferEnvio, 0, sizeof(buffer));
+            }
+            keepAlive=false;
+            if (requestCliente.getHeaders().find("Connection") != requestCliente.getHeaders().end())
+            {
+                string connectionHeader = requestCliente.getHeaders().at("Connection");
+                if (connectionHeader.compare("keep-alive") == 0)
+                {
+                    keepAlive = true;
+                }
+                if (!keepAlive)
+                {
+                    usleep(5000);
+                }
+            }
+
+            // Errores de sintaxis en la escritura del request.
         }
+        catch (const exception &e)
+        {
+            cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
+            ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
+            string errores = RespuestaCliente.serializeResponse();
+            string shortRes = RespuestaCliente.shortResponse() + " " + string(e.what());
+            logObjet.appendToLog(shortRes);
+            string tiempoRes = string(logObjet.getCurrentTime());
+            logObjet.appendToLog(tiempoRes);
+            strcpy(bufferEnvio, errores.c_str());
+            int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
+            keepAlive = false;
+        }
+
+        delete[] bufferReq;
     }
-    catch (const exception &e) // Errores de sintaxis en la escritura del request.
-    {
-        cerr << "ERROR PROCESANDO PETICION:  " << e.what() << '\n';
-        ParserResponse RespuestaCliente = ParserResponse::handleMacroErrors(string(e.what()));
-        string errores = RespuestaCliente.serializeResponse();
-        string shortRes = RespuestaCliente.shortResponse() + " " + string(e.what());
-        logObjet.appendToLog(shortRes);
-        string tiempoRes = string(logObjet.getCurrentTime());
-        logObjet.appendToLog(tiempoRes);
-        strcpy(bufferEnvio, errores.c_str());
-        int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
-    }
-    delete [] bufferReq;
     close(socketCliente);
     pthread_exit(NULL);
 }

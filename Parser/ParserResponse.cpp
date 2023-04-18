@@ -269,10 +269,13 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
         {
             this->responseCode = CREATED;
         }
-        map<string, string> cabecera = {
-            {"Location", path + "/" + downloadName}};
-        this->headers = cabecera;
+        
+        
         string responseB = "Archivo " + downloadName + " creado satisfactoriamente";
+        map<string, string> cabecera = {
+            {"Location", path + downloadName},
+            {"Content-Length", to_string(responseB.length())}};
+        this->headers = cabecera;
         Body nuevoBody = Body(contentType, responseB);
         this->body = nuevoBody;
     }
