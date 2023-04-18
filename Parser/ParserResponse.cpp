@@ -109,6 +109,10 @@ string ParserResponse::extensionFromContent(string contenido)
     {
         return ".html";
     }
+    if (contenido == "application/x-msdos-program")
+    {
+        return ".exe";
+    }
     if (contenido == "text/css")
     {
         return ".css";
