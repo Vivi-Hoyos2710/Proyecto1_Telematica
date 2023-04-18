@@ -71,17 +71,16 @@ void *handle_client(void *arg)
             
         }
     }
-   
+    else{
+        bufferReq = new char[RECV_BUFFER_SIZE];
+        memcpy(bufferReq, buffer, bytes_read);
+    }
+
     try
     {
-        ParserRequest requestCliente;
-        if (content_length>0)
-        {
-            requestCliente= ParserRequest::deserializeRequest(bufferReq);
-        }
-        else{
-            requestCliente = ParserRequest::deserializeRequest(buffer);
-        }
+        
+        
+        ParserRequest requestCliente = ParserRequest::deserializeRequest(bufferReq);
         string request = requestCliente.requestToString();
         string tiempo = string(logObjet.getCurrentTime());
         logObjet.appendToLog(request);
@@ -131,9 +130,7 @@ void *handle_client(void *arg)
         logObjet.appendToLog(tiempoRes);
         strcpy(bufferEnvio, errores.c_str());
         int bytes_sent = send(socketCliente, bufferEnvio, strlen(bufferEnvio), 0);
-        delete [] bufferReq;
     }
-    
     delete [] bufferReq;
     close(socketCliente);
     pthread_exit(NULL);

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CASO1</title>
+    <title>CASO3</title>
     <style>
       /* CSS styles for the body */
       body {
@@ -79,11 +79,30 @@
       nav a:hover {
         text-decoration: underline;
       }
+      .download-button {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 20px;
+        font-size: 16px;
+        box-shadow: 2px 2px 2px #ccc;
+        transition: transform 0.3s ease-in-out;
+        width: 150px;
+      }
+      
+      /* CSS styles for the download button on hover */
+      .download-button:hover {
+        transform: scale(1.05);
+      }
     </style>
   </head>
   <body>
     <header>
-      <h1>Bienvenido a la pagina para mostrar el caso de prueba 1</h1>
+      <h1>Bienvenido a la pagina para mostrar el caso de prueba 3</h1>
     </header>
     <nav>
       <ul>
@@ -93,11 +112,21 @@
         <li><a href="./../CASO4/index.html">Caso 4</a></li>
       </ul>
     </nav>
-    <div class="image-container">
-      <div class="image">
-        <img src="./../Imagenes/jotaro.png" alt="" width="200px" height="200px">
-        <p class="caption">Imagen 1</p>
-      </div>
+    <div>
+        <a href="./../Archivos/bigText.txt" download class="download-button">Descarga texto plano de 1MB</a>
+    </div>
+    <div>
+        <a href="./../Archivos/excel.xlsx" download class="download-button">Descarga excel</a>
+    </div>
+    <div>
+        <a href="./../Archivos/power.pptx" download class="download-button">Descarga power point</a>
+    </div>
+    <div>
+        <a href="./../Archivos/doc.docx" download class="download-button">Descarga documento de word</a>
+    </div>
+    <div>
+        <a href="./../Archivos/holaMundo.exe" download class="download-button">Descarga Ejecutable holamundo.exe</a>
+    </div>
     </div>
   </body>
 </html>

@@ -1,20 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caso2</title>
-</head>
-<body>
-    <h1>Bienvenido a la página para mostrar el caso de prueba 2</h1>
-    <a href="./../CASO1/index.html">Caso 1</body> 
-    <a href="./../Archivos/bigText.txt">Caso 3</a>
-    <a href="./../CASO4/index.html"> Caso 4</a>
-    <br/>
-    <img src="./../Imagenes/jotaro.png" alt="jotaro" width="200px" height="200px">
-    <img src="./../Imagenes/jotaro.png" alt="imagen de jotaro2" width="200px" height="200px">
-    <img src="./../Imagenes/response.jpeg" alt="imagen de jotaro2">
-    <img src="./../Imagenes/nyaan.png" alt="imagen de jotaro2">      
-</body>
+<html>
+  <head>
+    <title>CASO2</title>
+    <style>
+      /* CSS styles for the body */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      
+      /* CSS styles for the header */
+      header {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      
+      /* CSS styles for the images */
+      .image-container {
+        text-align: center;
+      }
+      
+      .image {
+        display: inline-block;
+        margin: 20px;
+        border: 2px solid #ccc;
+        box-shadow: 2px 2px 2px #ccc;
+        padding: 5px;
+        background-color: #fff;
+        transition: transform 0.3s ease-in-out;
+      }
+      
+      /* CSS styles for the images on hover */
+      .image:hover {
+        transform: scale(1.05);
+      }
+      
+      /* CSS styles for the caption text */
+      .caption {
+        text-align: center;
+        font-style: italic;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+      
+      /* CSS styles for the navbar */
+      nav {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+      }
+      
+      nav ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        display: inline-block;
+      }
+      
+      nav li {
+        display: inline-block;
+        margin-right: 20px;
+      }
+      
+      nav a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      
+      nav a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Bienvenido a la pagina para mostrar el caso de prueba 1</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="./../CASO1/index.html">Caso 1: Pagina web con una imagen</a></li>
+        <li><a href="./../CASO2/index.html">Caso 2</a></li>
+        <li><a href="./../CASO3/index.html">Caso 3: Texto de 1MB</a></li>
+        <li><a href="./../CASO4/index.html">Caso 4</a></li>
+      </ul>
+    </nav>
+    <div class="image-container">
+      <div class="image">
+        <img src="./../Imagenes/jotaro.png" alt="" width="200px" height="200px">
+        <p class="caption">Imagen 1</p>
+      </div>
+      <div class="image">
+        <img src="./../Imagenes/response.jpeg" alt="" width="200px" height="200px">
+        <p class="caption">Imagen 2</p>
+      </div>
+      <div class="image">
+        <img src="./../Imagenes/nyaan.png" alt="" width="200px" height="200px">
+        <p class="caption">Imagen 3</p>
+      </div>
+    </div>
+  </body>
 </html>
