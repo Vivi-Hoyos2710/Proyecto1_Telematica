@@ -430,3 +430,27 @@ Mon Apr 17 17:48:07 2023
 HTTP/1.1 201
 Mon Apr 17 17:48:07 2023
 
+GET /Archivos/mochilaFraccionable.exe HTTP/1.1 
+Mon Apr 17 18:47:48 2023
+
+HTTP/1.1 200
+Mon Apr 17 18:47:48 2023
+
+GET /Archivos/mochilaFraccionable.exe HTTP/1.1 
+Mon Apr 17 18:51:26 2023
+
+HTTP/1.1 200
+Mon Apr 17 18:51:26 2023
+
+POST /Archivos HTTP/1.1 
+Mon Apr 17 18:52:59 2023
+
+HTTP/1.1 201
+Mon Apr 17 18:52:59 2023
+
+POST /Archivos HTTP/1.1 
+Mon Apr 17 19:15:32 2023
+
+HTTP/1.1 201
+Mon Apr 17 19:15:33 2023
+

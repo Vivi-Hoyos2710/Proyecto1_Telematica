@@ -88,7 +88,7 @@ string ParserResponse::extensionFromContent(string contenido)
     if(contenido == "application/xml"){
         return ".xml";
     }
-    if(contenido == "application/octet-stream"){
+    if(contenido == "application/octet-stream" || contenido == "application/x-msdos-program"){
         return ".exe";
     }
     if(contenido == "application/msword" || contenido == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
