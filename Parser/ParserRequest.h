@@ -13,6 +13,7 @@ private:
     Body bodyReq;
 
 public:
+    ParserRequest();
     ParserRequest(const string &method, const string &resource, const map<string, string> &headers, const string &version) noexcept;
     ParserRequest(const string &method, const string &resource, const map<string, string> &headers, const string &version, Body &bodyReq) noexcept;
     ~ParserRequest();

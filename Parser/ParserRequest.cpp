@@ -1,4 +1,7 @@
 #include "ParserRequest.h"
+ParserRequest::ParserRequest()
+{
+}
 ParserRequest::ParserRequest(const string &method, const string &resource, const map<string, string> &headers, const string &version) noexcept
     : version(version), method(method), resource(resource), headers(headers), bodyReq() {}
 
