@@ -40,7 +40,7 @@ void *handle_client(void *arg)
     char buffer[RECV_BUFFER_SIZE];
     char *bufferReq;
     char bufferEnvio[RECV_BUFFER_SIZE];
-    int bytes_read;
+    int bytes_read=0;
     int msgSize = 0;
     int content_length = 0;
     int bytesBody = 0;
@@ -51,7 +51,6 @@ void *handle_client(void *arg)
     bytes_read = recv(socketCliente, buffer, RECV_BUFFER_SIZE, 0);
     if (bytes_read <= 0) {
         perror("recv");
-        close(socketCliente);
         return NULL;
     }
     char *contentLengthStr = strstr(buffer, "Content-Length:");
