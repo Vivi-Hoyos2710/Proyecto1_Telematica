@@ -119,6 +119,7 @@ string ParserResponse::extensionFromContent(string contenido)
     {
         return ".html";
     }
+
     if (contenido == "application/x-msdos-program")
     {
         return ".exe";
@@ -127,7 +128,7 @@ string ParserResponse::extensionFromContent(string contenido)
     {
         return ".css";
     }
-    if (contenido == "application/json")
+    if (contenido == "application/json" || contenido == "application/x-www-form-urlencoded")
     {
         return ".json";
     }
@@ -246,8 +247,7 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
     {
         fs::path inputPath = documentRootPath + path;
         string contentType = bodyReq.getDataType();
-
-        string extension = extensionFromContent(contentType);
+        cout << contentType << endl;
 
         string downloadName;
 
@@ -262,22 +262,66 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
             downloadName = "defaultName";
         }
 
+        string extension = extensionFromContent(contentType);
         string nameFile = inputPath.string() + "/" + downloadName + extension;
 
-        bool creado = writeFile(nameFile, bodyReq.getBuffer(), bodyReq.getLen());
+        string keepAlive;
+        if (headers.at("Connection") == "keep-alive")
+        {
+            keepAlive = "timeout=5, max=0 for response";
+        }
+        else
+        {
+            keepAlive = "close";
+        }
+        bool creado;
+        if (contentType == "application/x-www-form-urlencoded")
+        {
+            string jsonFinal = "{";
+            string info = string(bodyReq.getBuffer());
+            cout<<"LLEGA: "<<info<<endl;
+            vector<string> campos = split(info, "&");
+            cout<<"size "<<campos.size()<<endl;
+            for (int i = 0; i < campos.size(); i++)
+            {
+                vector<string> pareja = split(campos[i], "=");
+                
+                int pos=0;
+                string delim="%20";
+                string delim2="+";
+                replace(pareja[0],delim," ");
+                replace(pareja[0],delim2," ");
+                replace(pareja[1],delim," ");
+                replace(pareja[1],delim2," ");
+                cout<<"Parejas: "<<pareja[0]<<" "<<pareja[1]<<endl;
+                if(i==campos.size()-1){
+                    jsonFinal += "\"" + pareja[0]+ "\"" + ":" +"\""+ pareja[1] +"\""+ "\n";
+                }
+                else{
+                    jsonFinal += "\"" + pareja[0]+ "\"" + ":" +"\""+ pareja[1] +"\""+ "," + "\n";
+                }
+                
+            }
+            jsonFinal += "}";
+            cout << jsonFinal << endl;
+             creado = writeFile(nameFile, jsonFinal.c_str(),jsonFinal.length());
+        }
+        else{
+             creado = writeFile(nameFile, bodyReq.getBuffer(), bodyReq.getLen());
+        }
+        
         if (creado)
         {
             this->responseCode = CREATED;
+            string responseB = "Archivo " + downloadName + " creado satisfactoriamente";
+            map<string, string> cabecera = {
+                {"Location", nameFile},
+                {"Content-Length", to_string(responseB.length())},
+                {"Keep-Alive", keepAlive}};
+            this->headers = cabecera;
+            Body nuevoBody = Body(contentType, responseB);
+            this->body = nuevoBody;
         }
-        
-        
-        string responseB = "Archivo " + downloadName + " creado satisfactoriamente";
-        map<string, string> cabecera = {
-            {"Location", path + downloadName},
-            {"Content-Length", to_string(responseB.length())}};
-        this->headers = cabecera;
-        Body nuevoBody = Body(contentType, responseB);
-        this->body = nuevoBody;
     }
     else
     {
@@ -363,19 +407,22 @@ ParserResponse ParserResponse::handleMacroErrors(const string error)
         return ParserResponse("HTTP/1.1");
     }
 }
-int ParserResponse::writeFile(const std::string &filename, const char *buffer, size_t bufferSize)
+int ParserResponse::writeFile(const string &filename, const char *buffer, size_t bufferSize)
 {
-    std::ofstream file(filename, std::ios::binary);
+
+    cout<<"WRITE: "<<buffer<<endl;
+    ofstream file(filename, ios::binary | ios::app);
     if (file.is_open())
     {
         file.write(buffer, bufferSize);
+        file << "\n";
         file.close();
-        std::cout << "File saved successfully\n";
+        cout << "File saved successfully\n";
         return true;
     }
     else
     {
-        std::cerr << "Unable to open file for writing\n";
+        cerr << "Unable to open file for writing\n";
         return false;
     }
 }

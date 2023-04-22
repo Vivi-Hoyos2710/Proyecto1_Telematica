@@ -6,6 +6,7 @@
 #include <fstream>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <sstream>
 namespace fs = std::filesystem;
 class ParserResponse
 {
@@ -24,7 +25,6 @@ public:
     constexpr static int FORBIDDEN = 403;
     constexpr static int NOT_FOUND = 404;
     constexpr static int REQUEST_TIMEOUT = 408;
-    constexpr static int INTERNAL_SERVER_ERROR = 500;
     constexpr static int BAD_GATEWAY = 502;
     constexpr static int HTTP_VERSION_NOT_SUPPORTED = 505;
     constexpr static int SERVICE_UNAVAILABLE = 503;
