@@ -20,6 +20,8 @@ const string &ParserRequest::getVersion()
     return this->version;
 }
 const string &ParserRequest::getResource()
+
+
 {
     return this->resource;
 }

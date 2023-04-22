@@ -90,13 +90,14 @@ void *handle_client(void *arg)
         {
             try
             {
-                cout << bufferReq << "request"<<endl;
+                
                 ParserRequest requestCliente = ParserRequest::deserializeRequest(bufferReq);
                 string request = requestCliente.requestToString();
                 string tiempo = string(logObjet.getCurrentTime());
                 logObjet.appendToLog(request);
                 logObjet.appendToLog(tiempo);
-                cout << request + '\n'
+                cout << requ
+                est + '\n'
                      << tiempo << endl;
                 ParserResponse RespuestaCliente = ParserResponse::deserializeResponse(requestCliente, direccion_absoluta_DRF);
                 string res = RespuestaCliente.serializeResponse();

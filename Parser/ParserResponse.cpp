@@ -266,8 +266,6 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
     {
         fs::path inputPath = documentRootPath + path;
         string contentType = bodyReq.getDataType();
-        cout << contentType << endl;
-
         string downloadName;
 
         if (headers.find("nameFile") != headers.end())
@@ -298,9 +296,9 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
         {
             string jsonFinal = "{";
             string info = string(bodyReq.getBuffer());
-            cout<<"LLEGA: "<<info<<endl;
+            
             vector<string> campos = split(info, "&");
-            cout<<"size "<<campos.size()<<endl;
+            
             for (int i = 0; i < campos.size(); i++)
             {
                 vector<string> pareja = split(campos[i], "=");
@@ -312,7 +310,7 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
                 replace(pareja[0],delim2," ");
                 replace(pareja[1],delim," ");
                 replace(pareja[1],delim2," ");
-                cout<<"Parejas: "<<pareja[0]<<" "<<pareja[1]<<endl;
+                
                 if(i==campos.size()-1){
                     jsonFinal += "\"" + pareja[0]+ "\"" + ":" +"\""+ pareja[1] +"\""+ "\n";
                 }
@@ -322,7 +320,7 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
                 
             }
             jsonFinal += "}";
-            cout << jsonFinal << endl;
+            
              creado = writeFile(nameFile, jsonFinal.c_str(),jsonFinal.length());
         }
         else{
