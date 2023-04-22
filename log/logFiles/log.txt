@@ -32717,3 +32717,297 @@ Fri Apr 21 22:20:21 2023
 HTTP/1.1 201
 Fri Apr 21 22:20:21 2023
 
+GET /CASO5/index.html HTTP/1.1 
+Fri Apr 21 22:25:26 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:25:26 2023
+
+GET /favicon.ico HTTP/1.1 
+Fri Apr 21 22:25:26 2023
+
+HTTP/1.1 404
+Fri Apr 21 22:25:26 2023
+
+POST /Archivos HTTP/1.1 
+Fri Apr 21 22:26:00 2023
+
+HTTP/1.1 201
+Fri Apr 21 22:26:00 2023
+
+GET /CASO5/index.html HTTP/1.1 
+Fri Apr 21 22:27:08 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:27:08 2023
+
+GET /CASO5/index.html HTTP/1.1 
+Fri Apr 21 22:27:21 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:27:21 2023
+
+GET /CASO5/index.html HTTP/1.1 
+Fri Apr 21 22:27:26 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:27:26 2023
+
+GET /CASO5/index.html HTTP/1.1 
+Fri Apr 21 22:27:27 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:27:27 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Fri Apr 21 22:27:41 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:27:41 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+Fri Apr 21 22:27:41 2023
+
+Fri Apr 21 22:27:41 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Fri Apr 21 22:27:41 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+Fri Apr 21 22:27:41 2023
+
+Fri Apr 21 22:27:41 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:27:41 2023
+
+GET /CASO5/index.html HTTP/1.1 
+Fri Apr 21 22:27:45 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:27:45 2023
+
+GET /CASO5/index.html HTTP/1.1 
+Fri Apr 21 22:35:21 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:35:21 2023
+
+GET /CASO5/css/indexstyles.css HTTP/1.1 
+Fri Apr 21 22:35:21 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:35:21 2023
+
+POST /form HTTP/1.1 
+Fri Apr 21 22:36:08 2023
+
+HTTP/1.1 201
+Fri Apr 21 22:36:08 2023
+
+POST /form HTTP/1.1 
+Fri Apr 21 22:47:58 2023
+
+HTTP/1.1 201
+Fri Apr 21 22:47:58 2023
+
+GET /CASO5/index.html HTTP/1.1 
+Fri Apr 21 22:48:47 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:48:47 2023
+
+GET /CASO5/css/indexstyles.css HTTP/1.1 
+Fri Apr 21 22:48:47 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:48:47 2023
+
+GET /CASO5/index.html HTTP/1.1 
+Fri Apr 21 22:48:47 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:48:47 2023
+
+GET /CASO5/css/indexstyles.css HTTP/1.1 
+Fri Apr 21 22:48:47 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:48:47 2023
+
+POST /form HTTP/1.1 
+Fri Apr 21 22:48:54 2023
+
+HTTP/1.1 201
+Fri Apr 21 22:48:54 2023
+
+GET /CASO2/index.html HTTP/1.1 
+Fri Apr 21 22:53:27 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:53:27 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+GET /Imagenes/response.jpeg HTTP/1.1 
+Fri Apr 21 22:53:27 2023
+
+GET /Imagenes/nyaan.png HTTP/1.1 
+Fri Apr 21 22:53:27 2023
+
+Fri Apr 21 22:53:27 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Fri Apr 21 22:53:27 2023
+
+Fri Apr 21 22:53:27 2023
+
+Fri Apr 21 22:53:27 2023
+
+GET /CASO2/index.html HTTP/1.1 
+Fri Apr 21 22:56:17 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:56:17 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+GET /Imagenes/response.jpeg HTTP/1.1 
+Fri Apr 21 22:56:17 2023
+
+Fri Apr 21 22:56:17 2023
+
+GET /Imagenes/nyaan.png HTTP/1.1 
+HTTP/1.1 200
+HTTP/1.1 200
+Fri Apr 21 22:56:17 2023
+
+Fri Apr 21 22:56:17 2023
+
+Fri Apr 21 22:56:17 2023
+
+HTTP/1.1 200
+GET /Archivos/video.mp4 HTTP/1.1 
+Fri Apr 21 22:56:17 2023
+
+Fri Apr 21 22:56:17 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:56:17 2023
+
+GET /favicon.ico HTTP/1.1 
+Fri Apr 21 22:56:19 2023
+
+HTTP/1.1 404
+Fri Apr 21 22:56:19 2023
+
+GET /CASO2/index.html HTTP/1.1 
+Fri Apr 21 22:56:30 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:56:30 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+GET /Imagenes/response.jpeg HTTP/1.1 
+Fri Apr 21 22:56:30 2023
+
+Fri Apr 21 22:56:30 2023
+
+GET /Imagenes/nyaan.png HTTP/1.1 
+Fri Apr 21 22:56:30 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+Fri Apr 21 22:56:30 2023
+
+Fri Apr 21 22:56:30 2023
+
+GET /Archivos/video.mp4 HTTP/1.1 
+Fri Apr 21 22:56:30 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:56:30 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:56:30 2023
+
+GET /CASO2/index.html HTTP/1.1 
+Fri Apr 21 22:56:33 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:56:33 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+GET /Imagenes/response.jpeg HTTP/1.1 
+Fri Apr 21 22:56:33 2023
+
+Fri Apr 21 22:56:33 2023
+
+GET /Imagenes/nyaan.png HTTP/1.1 
+Fri Apr 21 22:56:33 2023
+
+GET /Archivos/video.mp4 HTTP/1.1 
+HTTP/1.1 200
+HTTP/1.1 200
+Fri Apr 21 22:56:33 2023
+
+Fri Apr 21 22:56:33 2023
+
+Fri Apr 21 22:56:33 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:56:33 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:56:33 2023
+
+GET /favicon.ico HTTP/1.1 
+Fri Apr 21 22:56:36 2023
+
+HTTP/1.1 404
+Fri Apr 21 22:56:36 2023
+
+GET /CASO3/index.html HTTP/1.1 
+Fri Apr 21 22:58:14 2023
+
+HTTP/1.1 200
+Fri Apr 21 22:58:14 2023
+
+GET /Archivos/bigText.txt HTTP/1.1 
+Fri Apr 21 23:03:47 2023
+
+HTTP/1.1 200
+Fri Apr 21 23:03:47 2023
+
+GET /Archivos/excel.xlsx HTTP/1.1 
+Fri Apr 21 23:03:51 2023
+
+HTTP/1.1 200
+Fri Apr 21 23:03:51 2023
+
+GET /Archivos/power.pptx HTTP/1.1 
+Fri Apr 21 23:03:55 2023
+
+HTTP/1.1 200
+Fri Apr 21 23:03:55 2023
+
+GET /Archivos/doc.docx HTTP/1.1 
+Fri Apr 21 23:04:02 2023
+
+HTTP/1.1 200
+Fri Apr 21 23:04:02 2023
+
+GET /CASO3/index.html HTTP/1.1 
+Fri Apr 21 23:04:23 2023
+
+HTTP/1.1 200
+Fri Apr 21 23:04:23 2023
+
+GET /Archivos/bigText.txt HTTP/1.1 
+Fri Apr 21 23:04:24 2023
+
+HTTP/1.1 200
+Fri Apr 21 23:04:24 2023
+
