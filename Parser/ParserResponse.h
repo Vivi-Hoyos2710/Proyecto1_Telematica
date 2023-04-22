@@ -34,6 +34,7 @@ public:
     ~ParserResponse();
     void handleHeadReq(string path,const string& documentRootPath);
     void handleGetReq(string path,const string& documentRootPath);
+    void handleOptReq();
     void handlePostReq(string path,const string& documentRootPath,Body bodyReq,map<string,string> headers);
 
     Body getBody();

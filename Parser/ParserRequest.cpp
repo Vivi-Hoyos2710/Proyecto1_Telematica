@@ -47,6 +47,9 @@ string ParserRequest::method_from_string(const string &metodo)
     {
         return metodo;
     }
+    else if(metodo.compare("OPTIONS") == 0){
+        return metodo;
+    }
     else
     {
 

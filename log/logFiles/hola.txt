@@ -1,0 +1,393 @@
+POST /Archivos HTTP/1.1 
+Mon Apr 17 21:20:18 2023
+
+HTTP/1.1 201
+Mon Apr 17 21:20:18 2023
+
+GET /CASO1/index.html HTTP/1.1 
+Mon Apr 17 23:54:04 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:05 2023
+
+GET /Imagenes/jotaro.png HTTP/1.1 
+Mon Apr 17 23:54:05 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:05 2023
+
+GET /favicon.ico HTTP/1.1 
+Mon Apr 17 23:54:05 2023
+
+HTTP/1.1 404
+Mon Apr 17 23:54:05 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:54:07 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:07 2023
+
+GET /Imagenes/cat.gif HTTP/1.1 
+GET /Imagenes/OMG.gif HTTP/1.1 
+GET /Imagenes/mega.jpg HTTP/1.1 
+Mon Apr 17 23:54:07 2023
+
+Mon Apr 17 23:54:07 2023
+
+Mon Apr 17 23:54:07 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:54:07 2023
+
+Mon Apr 17 23:54:07 2023
+
+Mon Apr 17 23:54:07 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:54:14 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:14 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+GET /Imagenes/mega.jpg HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 23:54:14 2023
+
+Mon Apr 17 23:54:14 2023
+
+Mon Apr 17 23:54:14 2023
+
+Mon Apr 17 23:54:14 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:54:14 2023
+
+Mon Apr 17 23:54:14 2023
+
+Mon Apr 17 23:54:14 2023
+
+Mon Apr 17 23:54:14 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:54:30 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:30 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 23:54:31 2023
+
+GET /Imagenes/cat.gif HTTP/1.1 
+GET /Imagenes/mega.jpg HTTP/1.1 
+Mon Apr 17 23:54:31 2023
+
+Mon Apr 17 23:54:31 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:54:31 2023
+
+Mon Apr 17 23:54:31 2023
+
+Mon Apr 17 23:54:31 2023
+
+GET /favicon.ico HTTP/1.1 
+Mon Apr 17 23:54:31 2023
+
+HTTP/1.1 404
+Mon Apr 17 23:54:31 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:54:33 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:33 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+Mon Apr 17 23:54:33 2023
+
+Mon Apr 17 23:54:33 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Mon Apr 17 23:54:33 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:54:33 2023
+
+Mon Apr 17 23:54:33 2023
+
+Mon Apr 17 23:54:33 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:54:34 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:34 2023
+
+GET /Imagenes/cat.gif HTTP/1.1 
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 23:54:34 2023
+
+Mon Apr 17 23:54:34 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Mon Apr 17 23:54:34 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:54:34 2023
+
+Mon Apr 17 23:54:34 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:34 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:54:35 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:35 2023
+
+GET /Imagenes/cat.gif HTTP/1.1 
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 23:54:35 2023
+
+Mon Apr 17 23:54:35 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Mon Apr 17 23:54:35 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:54:35 2023
+
+Mon Apr 17 23:54:35 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:35 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:54:36 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:36 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+Mon Apr 17 23:54:36 2023
+
+Mon Apr 17 23:54:36 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Mon Apr 17 23:54:36 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:54:36 2023
+
+Mon Apr 17 23:54:36 2023
+
+Mon Apr 17 23:54:36 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:54:38 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:38 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+GET /Imagenes/OMG.gif HTTP/1.1 
+GET /Imagenes/mega.jpg HTTP/1.1 
+Mon Apr 17 23:54:38 2023
+
+Mon Apr 17 23:54:38 2023
+
+Mon Apr 17 23:54:38 2023
+
+Mon Apr 17 23:54:38 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:54:38 2023
+
+Mon Apr 17 23:54:38 2023
+
+Mon Apr 17 23:54:38 2023
+
+Mon Apr 17 23:54:38 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:54:50 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:54:50 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+GET /Imagenes/mega.jpg HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 23:54:50 2023
+
+Mon Apr 17 23:54:50 2023
+
+Mon Apr 17 23:54:50 2023
+
+Mon Apr 17 23:54:50 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:54:50 2023
+
+Mon Apr 17 23:54:50 2023
+
+Mon Apr 17 23:54:50 2023
+
+Mon Apr 17 23:54:50 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:55:16 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:55:16 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+GET /Imagenes/mega.jpg HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+Mon Apr 17 23:55:17 2023
+
+Mon Apr 17 23:55:17 2023
+
+Mon Apr 17 23:55:17 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:55:17 2023
+
+Mon Apr 17 23:55:17 2023
+
+Mon Apr 17 23:55:17 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+Mon Apr 17 23:55:17 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:55:17 2023
+
+GET /CASO4/index.html HTTP/1.1 
+Mon Apr 17 23:55:24 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:55:24 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+GET /Imagenes/cat.gif HTTP/1.1 
+GET /Imagenes/mega.jpg HTTP/1.1 
+Mon Apr 17 23:55:24 2023
+
+Mon Apr 17 23:55:24 2023
+
+Mon Apr 17 23:55:24 2023
+
+HTTP/1.1 200
+HTTP/1.1 200
+HTTP/1.1 200
+Mon Apr 17 23:55:25 2023
+
+Mon Apr 17 23:55:25 2023
+
+Mon Apr 17 23:55:25 2023
+
+GET /Imagenes/OMG.gif HTTP/1.1 
+Mon Apr 17 23:55:25 2023
+
+GET /Imagenes/mega.jpg HTTP/1.1 
+HTTP/1.1 200
+Mon Apr 17 23:55:25 2023
+
+Mon Apr 17 23:55:25 2023
+
+HTTP/1.1 200
+Mon Apr 17 23:55:25 2023
+
+POST /Archivos HTTP/1.1 
+Fri Apr 21 18:35:58 2023
+
+HTTP/1.1 201
+Fri Apr 21 18:35:58 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:36:42 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:38:21 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:38:50 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:40:20 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:40:31 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:40:43 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:41:33 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:48:41 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:51:51 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:52:26 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:52:41 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:53:07 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:53:52 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 18:59:54 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 19:00:09 2023
+
+POST /Archivos HTTP/1.1 
+Fri Apr 21 19:05:28 2023
+
+HTTP/1.1 201
+Fri Apr 21 19:05:28 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 19:27:18 2023
+
+HTTP/1.1 405 Method Not Allowed
+Fri Apr 21 19:29:48 2023
+

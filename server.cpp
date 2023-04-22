@@ -90,7 +90,7 @@ void *handle_client(void *arg)
         {
             try
             {
-
+                cout << bufferReq << "request"<<endl;
                 ParserRequest requestCliente = ParserRequest::deserializeRequest(bufferReq);
                 string request = requestCliente.requestToString();
                 string tiempo = string(logObjet.getCurrentTime());
