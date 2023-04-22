@@ -167,7 +167,6 @@ void *handle_client(void *arg)
         }
         delete[] bufferReq;
     }
-    cout << "Se cierra socket cliente" << endl;
     close(socketCliente);
     pthread_exit(NULL);
 }
