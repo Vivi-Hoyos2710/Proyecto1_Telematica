@@ -43,15 +43,22 @@ En la primera api que tenemos esta el caso de prueba donde tenemos una pagina we
 El segundo caso de prueba tenemos varias imagenes  y links 
 ```/CASO2/index.html```
 
-El tercer caso de prueba que tenemos es un archivo que pese 1MB
+En el tercer caso tenemos una pagina que te carga 5 archivos desde el servidor de diferentes tipos para que tu puedas descargar 
 
-```/Archivos/bigText.txt```
+```/CASO3/index.html```
 
-El cuarto paso de prueba es una pagina web donde tenemos links y varias imagenes de 1MB
+El cuarto caso de prueba es una pagina web donde tenemos links y varias imagenes de 1MB
 
 ```/CASO4/index.html```
 
-A estas 4 apis les puedes hacer GET O HEAD. Tambien tenemos otra api ```/Imagenes``` Y aca puedes hacer POST de archivos que quieras o en el api ```/Archivos``` 
+El quinto caso de prueba es una web donde podemos hacer post desde un mini front donde tenemos un formulario y hacemos post para enviarlos y lo guardamos como un json,
+tambien en la parte de abajo de la pagina tienes un input de file para que cargues un archivo y lo puedas guardar. Los archivos de esta pagina se van a guardar en una
+carpeta llamada form
+```/CASO5/index.html```
+
+De igual manera a estas 5 apis les puedes hacer GET o HEAD. Tambien tenemos otra api ```/Imagenes``` Y aca puedes hacer POST de archivos que quieras o en el api ```/Archivos``` 
+
+
 
 
 
