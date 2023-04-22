@@ -281,7 +281,7 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
 
         string extension = extensionFromContent(contentType);
         string nameFile = inputPath.string() + "/" + downloadName + extension;
-
+        cout << contentType<<endl;
         string keepAlive;
         if (headers.at("Connection") == "keep-alive")
         {
@@ -332,6 +332,7 @@ void ParserResponse::handlePostReq(string path, const string &documentRootPath, 
             this->responseCode = CREATED;
             string responseB = "Archivo " + downloadName + " creado satisfactoriamente";
             map<string, string> cabecera = {
+                {"Access-Control-Allow-Origin","*"},
                 {"Location", nameFile},
                 {"Content-Length", to_string(responseB.length())},
                 {"Keep-Alive", keepAlive}};
